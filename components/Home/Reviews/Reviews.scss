@@ -1,0 +1,237 @@
+@import '/public/const.scss';
+
+.reviews{
+    margin-bottom: 100px;
+    .reviews-link{
+        font-size: 20px;
+        padding: 0 15%;
+        a{
+            color: $blue;
+        }
+        a:hover{
+            color: $dark-blue;
+        }
+    }
+    h1{
+        font-weight: 600;
+        padding: 0 15%;
+    }
+    .swiper-button-prev-new, .swiper-button-next-new{
+        position: absolute;
+        width: 45px;
+        height: 45px;
+        border-radius: 40px;
+        background-color: hsla(174, 6%, 35%, 0.65);
+        border: none;
+        top: calc(50% - 3vh);
+        z-index: 1;
+    }
+    .swiper-button-prev-new{
+        left: -6%;
+    }
+    .swiper-button-next-new{
+        right: -6%;
+    }
+    .swiper-button-prev-new:after{
+        content: 'prev';
+    }
+    .swiper-button-next-new:after{
+        content: 'next';
+    }
+    .swiper-button-prev-new:after, .swiper-button-next-new:after{
+        font-family: swiper-icons;
+        text-transform: none !important;
+        letter-spacing: 0;
+        //font-feature-settings: ;
+        font-variant: initial;
+        font-size: 18px;
+        font-weight: 600;
+        color: white;
+    }
+    .swiper-button-prev-new.swiper-button-disabled, .swiper-button-next-new.swiper-button-disabled {
+        opacity: 0.35;
+        cursor: auto;
+        pointer-events: none;
+    }
+    .reviews-slider{
+        overflow: visible;
+        padding: 40px 0;
+        margin: 0 15%;
+        .swiper-slide{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 30px;
+            background-color: white;
+            width: 450px;
+            height: 300px;
+            border-radius: 20px;
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            -ms-border-radius: 20px;
+            -o-border-radius: 20px;
+            .profile{
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+                .rank{
+                    display: flex;
+                    flex-direction: column;
+                    .star{
+                        display: flex;
+                        flex-direction: row;
+                    }
+                    svg{
+                        width: 20px;
+                        height: auto;
+                        path{
+                            fill: $blue;
+                        }
+                    }
+                    p{
+                        font-size: 15px;
+                    }
+                }
+            }
+            .review{
+                padding: 20px;
+                font-size: 15px;
+                background-color: $body;
+                border-radius: 15px;
+                -webkit-border-radius: 15px;
+                -moz-border-radius: 15px;
+                -ms-border-radius: 15px;
+                -o-border-radius: 15px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1785px){
+    .reviews{
+        .reviews-link{
+            font-size: 20px;
+            padding: 0 10%;
+            a{
+                color: $blue;
+            }
+            a:hover{
+                color: $dark-blue;
+            }
+        }
+        .swiper-button-prev-new{
+            left: -4%;
+        }
+        .swiper-button-next-new{
+            right: -4%;
+        }
+        h1{
+            padding: 0 10%;
+        }
+        .reviews-slider{
+            margin: 0 10%;
+        }
+    }
+}
+
+@media screen and (max-width: 1570px){
+    .reviews{
+        .reviews-link{
+            font-size: 20px;
+            padding: 0 5%;
+            a{
+                color: $blue;
+            }
+            a:hover{
+                color: $dark-blue;
+            }
+        }
+        .swiper-button-prev-new{
+            left: -4.5%;
+        }
+        .swiper-button-next-new{
+            right: -4.5%;
+        }
+        h1{
+            padding: 0 5%;
+        }
+        .reviews-slider{
+            margin: 0 5%;
+        }
+    }
+}
+
+@media screen and (max-width: 992px){
+    .reviews{
+        .reviews-link{
+            font-size: 20px;
+            padding: 0 3%;
+            a{
+                color: $blue;
+            }
+            a:hover{
+                color: $dark-blue;
+            }
+        }
+        h1{
+            padding: 0 3%;
+        }
+        .swiper-button-prev-new, .swiper-button-next-new{
+            display: none;
+        }
+        .reviews-slider{
+            margin: 0 3% 0;
+            .swiper-slide{
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+                background-color: white;
+                width: 300px;
+                height: 300px;
+                border-radius: 20px;
+                -webkit-border-radius: 20px;
+                -moz-border-radius: 20px;
+                -ms-border-radius: 20px;
+                -o-border-radius: 20px;
+                .profile{
+                    display: flex;
+                    flex-direction: row;
+                    gap: 15px;
+                    img{
+                        height: 60px;
+                        width: auto;
+                    }
+                    .rank{
+                        display: flex;
+                        flex-direction: column;
+                        strong{
+                            font-size: 15px;
+                        }
+                        svg{
+                            width: 16px;
+                            height: auto;
+                            path{
+                                fill: $blue;
+                            }
+                        }
+                        p{
+                            font-size: 13px;
+                        }
+                    }
+                }
+                .review{
+                    padding: 20px;
+                    background-color: $body;
+                    border-radius: 15px;
+                    -webkit-border-radius: 15px;
+                    -moz-border-radius: 15px;
+                    -ms-border-radius: 15px;
+                    -o-border-radius: 15px;
+                    font-size: 12px;
+                    flex: 1;
+                }
+            }
+        }
+    }
+}

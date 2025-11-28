@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iqos-iluma.com/sitemap.xml

@@ -1,0 +1,25 @@
+.container {
+  width: 100%;
+  padding-left: 15%;
+  padding-right: 15%;
+  margin: 150px auto 100px auto;
+  h1 {
+    text-align: center;
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+    @media (max-width: 400px) {
+      font-size: 20px;
+    }
+  }
+  p {
+    text-align: center;
+  }
+}
+
+.footer {
+  margin-bottom: 100px;
+  width: 100%;
+  padding-left: 15%;
+  padding-right: 15%;
+}
