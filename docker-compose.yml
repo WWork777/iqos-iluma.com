@@ -15,7 +15,7 @@ services:
     volumes:
       # Все сайты используют одну и ту же папку с картинками
       - /var/www/iluma-store.ru/images:/app/public/images:ro
-      - /var/www/iqos-iluma.com/.next:/app/.next
+      # - /var/www/iqos-iluma.com/.next:/app/.next
 
 networks:
   web:
