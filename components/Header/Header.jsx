@@ -87,7 +87,7 @@ export default function Header(){
                 
                 <div className='contacts-container'>
                     <div className='icons'>
-                        <a href='https://t.me/+tXZ1x8yraKUzNWEy'>
+                        <a href='https://t.me/Ilumastore2025'>
                             <svg className='head-tg' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="1000px" height="1000px" viewBox="0 0 1000 1000" version="1.1">
                                 <g id="Artboard" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                     <circle id="Oval" fill="#229ED9" cx="500" cy="500" r="500"/>
@@ -128,7 +128,7 @@ export default function Header(){
                  
                         <div className='contacts-container'>
                             <div className='icons'>
-                                <a href='https://t.me/+tXZ1x8yraKUzNWEy'>
+                                <a href='https://t.me/Ilumastore2025'>
                                     <svg className='head-tg' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="1000px" height="1000px" viewBox="0 0 1000 1000" version="1.1">
                                         <g id="Artboard" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                                             <circle id="Oval" fill="#229ED9" cx="500" cy="500" r="500"/>
