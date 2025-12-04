@@ -7,6 +7,7 @@ body {
   min-height: 100vh;
 }
 
+
 body {
   color: $font;
   background: $body;
@@ -29,6 +30,7 @@ body {
     pointer-events: none; // Чтобы не мешал кликам
   }
 }
+
 
 * {
   box-sizing: border-box;
