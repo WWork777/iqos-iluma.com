@@ -71,7 +71,7 @@ export default function Poster() {
 							{/* <strong>Блог</strong> */}
 						</Link>
 						<Image
-							src={'/Home/Poster/poster.webp'}
+							src={'/Home/Poster/posterGalaxy.webp'}
 							alt='IQOS Iluma'
 							width={1000}
 							height={1000}
