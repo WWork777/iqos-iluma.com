@@ -75,7 +75,7 @@ export default function Hero() {
                       </svg>
                       <div>
                         Telegram
-                        <span>@ilumastoreRU</span>
+                        <span>@Ilumastore2025</span>
                       </div>
                       </Link>
                     </div>

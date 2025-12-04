@@ -64,6 +64,7 @@ export default function Header(){
                 </Link>
                 <div className='menu'>
                     <Link href='/products/iqos'>Устройства</Link>
+                    <Link href='/blog'>Блог</Link>
                     <Link href='/products/terea'>Стики</Link>
                     <Link href='/products/devices'>Аксессуары</Link>
                     <Link href='/products'>Каталог</Link>
@@ -120,6 +121,7 @@ export default function Header(){
                             </div>
                         </div>
                         <Link className='link-close' href='/'  onClick={(e) => handleLinkClick(e, '/products/iqos')}>Устройства</Link>
+                        <Link className='link-close' href='/blog'  onClick={(e) => handleLinkClick(e, '/blog')}>Стики</Link>
                         <Link className='link-close' href='/portfolio'  onClick={(e) => handleLinkClick(e, '/products/terea')}>Стики</Link>
                         <Link className='link-close' href='/services'  onClick={(e) => handleLinkClick(e, '/products/devices')}>Аксессуары</Link>
                         <Link className='link-close' href='/contacts'  onClick={(e) => handleLinkClick(e, '/products')}>Каталог</Link>
