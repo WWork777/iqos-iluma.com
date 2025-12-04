@@ -40,7 +40,7 @@ export default function Preview(){
                 <div className='preview-column-two'>
                     <Link href='/products/iqosexclusive' className='preview-card'>
                         <h3>Эксклюзивы</h3>
-                        <p>от 12 000 ₽</p>
+                        <p>от 9 500 ₽</p>
                         <Image src={'/Home/Preview/limited.webp'} alt='IQOS iLuma' width={500} height={700} />
                     </Link>
                     <Link href='/products/heets' className='preview-card'>
