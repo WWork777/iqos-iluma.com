@@ -38,16 +38,20 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${montserrat.variable}`}>
-        <CartProvider>
-          <YandexMetrika />
-          <Bootstrap />
-          <Header />
-          {children}
-          <Footer />
-          <Cart />
-          <CartButton />
-          {/* <BlockModal allowClose={true}/> */}
-        </CartProvider>
+        
+            <CartProvider>
+            <YandexMetrika />
+            <Bootstrap />
+            <Header />
+            <div className="newYearFon">
+            {children}
+            </div>
+            <Footer />
+            <Cart />
+            <CartButton />
+            {/* <BlockModal allowClose={true}/> */}
+          </CartProvider>
+        
       </body>
     </html>
   );
