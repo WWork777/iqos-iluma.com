@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies with legacy peer deps
         run: npm ci --legacy-peer-deps
 
+      - name: Install
+        run: npm install react@19.2.1 react-dom@19.2.1 --save-exact
+
       - name: Add server to known hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
