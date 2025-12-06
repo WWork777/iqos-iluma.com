@@ -12,13 +12,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies and fix React versions
+        run: |
+          npm install --legacy-peer-deps --force
+          npm install react@19.2.1 react-dom@19.2.1 --save-exact --legacy-peer-deps
+          # Обновляем package-lock.json с новыми версиями
+          npm install
+
+      - name: Push fixed package files to git
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add package.json package-lock.json
+          git commit -m "Fix React versions for Docker build" || echo "No changes to commit"
+          git push origin main || echo "No changes to push"
+
       - name: Install SSH key
         uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Install dependencies with legacy peer deps
-        run: npm ci --legacy-peer-deps
 
       - name: Add server to known hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
@@ -29,11 +47,16 @@ jobs:
             git config --global --add safe.directory /var/www/iqos-iluma.com
           "
 
-      - name: Deploy to server
+      - name: Deploy to server with clean build
         run: |
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd /var/www/iqos-iluma.com &&
-            git pull &&
-            docker compose down &&
-            docker compose up -d --build
+            echo 'Pulling latest changes...' &&
+            git pull origin main &&
+            echo 'Cleaning up old containers and images...' &&
+            docker system prune -f &&
+            echo 'Building with no cache...' &&
+            docker compose build --no-cache &&
+            echo 'Starting containers...' &&
+            docker compose up -d
           "
