@@ -20,7 +20,7 @@ jobs:
 
       - name: Install dependencies and fix React versions
         run: |
-          npm ci --legacy-peer-deps
+          npm install --legacy-peer-deps --force
           npm install react@19.2.1 react-dom@19.2.1 --save-exact --legacy-peer-deps
           # Обновляем package-lock.json с новыми версиями
           npm install
