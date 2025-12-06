@@ -1,4 +1,4 @@
-// next.config.js
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 1. Отключение уязвимых экспериментальных функций
@@ -12,36 +12,37 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*',
+        source: "/:path*",
         headers: [
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+            key: "Permissions-Policy",
+            value:
+              "camera=(), microphone=(), geolocation=(), interest-cohort=()",
           },
         ],
       },
       {
-        source: '/_next/static/:path*',
+        source: "/_next/static/:path*",
         headers: [
           {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },
@@ -51,21 +52,21 @@ const nextConfig = {
   // 3. Конфигурация безопасности сборки
   poweredByHeader: false,
   generateEtags: true,
-  
+
   // 4. Ограничение размеров загружаемых файлов
   serverRuntimeConfig: {
-    maxRequestBodySize: '10mb',
+    maxRequestBodySize: "10mb",
   },
-  
+
   // 5. Включение сжатия
   compress: true,
-  
+
   // 6. Настройка перенаправлений для защиты
   async redirects() {
     return [
       {
-        source: '/admin',
-        destination: '/admin/login',
+        source: "/admin",
+        destination: "/admin/login",
         permanent: false,
       },
     ];
@@ -76,19 +77,20 @@ const nextConfig = {
     return {
       beforeFiles: [
         {
-          source: '/_next/static/chunks/rsc',
+          source: "/_next/static/chunks/rsc",
           has: [
             {
-              type: 'header',
-              key: 'x-rsc-validator',
-              value: '.+',
+              type: "header",
+              key: "x-rsc-validator",
+              value: ".+",
             },
           ],
-          destination: '/_next/static/chunks/rsc',
+          destination: "/_next/static/chunks/rsc",
         },
       ],
     };
   },
 };
 
-module.exports = nextConfig;
+// ES модульный экспорт
+export default nextConfig;
