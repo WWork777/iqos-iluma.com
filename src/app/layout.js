@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
           <Footer />
           <Cart />
           <CartButton />
-          {/* <BlockModal allowClose={true} /> */}
+          <BlockModal allowClose={true} />
         </CartProvider>
       </body>
     </html>
