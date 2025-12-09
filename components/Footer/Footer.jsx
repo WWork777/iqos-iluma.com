@@ -27,6 +27,7 @@ export default function Footer() {
             </p>
             <p>Заказ от 1 блока! = 10 пачек</p>
             <p>2 пачки не продаем</p>
+            <p>САМОВЫВОЗ ВРЕМЕННО НЕДОСТУПЕН</p>
           </div>
         </div>
         <div className="contacts-footer">
