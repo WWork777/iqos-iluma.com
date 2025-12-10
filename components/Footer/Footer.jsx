@@ -34,7 +34,7 @@ export default function Footer() {
           <div className="footer-tel">
             <a href="tel:+7 (995) 153-80-19">+7 (995) 153-80-19</a>
             <p>
-              Пн-пт: с 12:00 до 22:00
+              Пн-пт: с 12:00-22:00
               <br />
               Сб-вс: с 12.00-21.00
             </p>
