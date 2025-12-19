@@ -800,6 +800,7 @@ ${formattedCart}
     <div className="checkout-page">
       <div className="checkout-form">
         <h1>Оформление заказа</h1>
+        <h5>Укажите Ваш номер в WhatsApp или Telegram ник для связи</h5>
         <form onSubmit={handleSubmit} ref={formRef}>
           <div className="checkout-name">
             <h4>Контактные данные</h4>
