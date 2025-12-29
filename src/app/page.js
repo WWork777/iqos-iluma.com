@@ -7,7 +7,7 @@ import About from "../../components/Home/About/About";
 import New from "../../components/Home/New/New";  
 import Exclusive from "../../components/Home/Exclusive/Exclusive";  
 import Reviews from "../../components/Home/Reviews/Reviews";
-import PromotionModal from "../../components/PromotionModal/PromotionModal";
+import ModalManager from "../../components/ModalManager/ModalManager";
 
 export const metadata = {
   title: "IQOS Iluma купить в Москве | Стики Terea | iqos Iluma",
@@ -39,7 +39,7 @@ export default function Home() {
       <New/>
       <About />
       <Reviews />
-      <PromotionModal allowClose={true}/>
+      <ModalManager/>
     </>
   );
 }
