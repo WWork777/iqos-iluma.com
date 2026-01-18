@@ -41,35 +41,65 @@ const CheckoutPage = () => {
 
   const [errors, setErrors] = useState({});
 
+  const scroolTo = (element) => {
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      element.focus();
+    }
+  };
+
   const validateForm = () => {
     const newErrors = {};
+    let elements;
+    let element;
 
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = "Введите имя";
+    if (selectedMethod === "delivery") {
+      if (!formData.streetAddress.trim()) {
+        element = document.querySelector(
+          `[placeholder="Номер дома и название улицы"]`,
+        );
+        scroolTo(element);
+        newErrors.streetAddress = "Введите адрес";
+      }
+
+      if (!formData.city.trim()) {
+        element = document.querySelector(`[placeholder="Город"]`);
+        scroolTo(element);
+        newErrors.city = "Введите город";
+      }
     }
 
     if (!formData.phoneNumber) {
+      element = document.querySelector(
+        `[placeholder="Введите номер телефона"]`,
+      );
+      scroolTo(element);
       newErrors.phoneNumber = "Введите номер телефона";
     } else if (formData.phoneNumber.replace(/\D/g, "").length < 11) {
+      element = document.querySelector(
+        `[placeholder="Введите номер телефона"]`,
+      );
+      scroolTo(element);
       newErrors.phoneNumber = "Некорректный номер телефона";
     }
 
-    // Валидация Telegram (необязательное поле, но если заполнено - проверяем формат)
+    if (!formData.lastName.trim()) {
+      elements = document.getElementsByName("lastName");
+      if (elements.length > 0) {
+        element = elements[0];
+        scroolTo(element);
+      }
+      newErrors.lastName = "Введите имя";
+    }
+
     if (
       formData.telegram.trim() &&
       !/^[@a-zA-Z0-9_]{5,32}$/.test(formData.telegram.replace(/^@/, ""))
     ) {
       newErrors.telegram = "Некорректный формат Telegram username";
-    }
-
-    if (selectedMethod === "delivery") {
-      if (!formData.city.trim()) {
-        newErrors.city = "Введите город";
-      }
-
-      if (!formData.streetAddress.trim()) {
-        newErrors.streetAddress = "Введите адрес";
-      }
     }
 
     if (!formData.privacyConsent) {
