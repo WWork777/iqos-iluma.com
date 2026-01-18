@@ -36,7 +36,7 @@ const CheckoutPage = () => {
   const hasBlock = cartItems.some((item) => item.type === "Блок");
 
   const onlyPacksAndBlocks = cartItems.every(
-    (item) => item.type === "Пачка" || item.type === "Блок"
+    (item) => item.type === "Пачка" || item.type === "Блок",
   );
 
   const [errors, setErrors] = useState({});
@@ -655,7 +655,7 @@ const CheckoutPage = () => {
           (item) =>
             `- ${item.name} (${item.type || "обычный"}) x${item.quantity}: ${
               item.price
-            } ₽`
+            } ₽`,
         )
         .join("\n");
 
@@ -691,7 +691,7 @@ ${formattedCart}
       } else if (
         selectedMethod === "delivery" &&
         moscowCities.some((city) =>
-          formData.city.trim().toLowerCase().includes(city)
+          formData.city.trim().toLowerCase().includes(city),
         )
       ) {
         mess = `Здравствуйте!\n\nПолучили ваш заказ с сайта ${site} ✅\n\nЗаказы отправляем через Яндекс или Достависту, предварительно согласовав с вами стоимость доставки. Оплата за заказ - переводом на карту.\n\nМожем отправить в любое удобное для Вас время.\n\n❗️Первый заказ можно оплатить при получении курьеру Достависты (в пределах МКАД)\n\nКогда Вам было бы удобно принять заказ? 😊\n\nКорзина:\n${formattedCart} \n\nАдрес:\nГород: ${formData.city}\nАдрес: ${formData.streetAddress}\n\nКонтактные данные:\nИмя: ${formData.lastName}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
@@ -751,22 +751,22 @@ ${formattedCart}
               chatId: `${formData.phoneNumber}@c.us`,
               message: mess,
             }),
-          }
+          },
         );
         // && whatsappResponse.ok
 
         if (telegramResponse.ok && whatsappResponse.ok) {
           console.log(
-            "Сообщение успешно отправлено в Telegram, WhatsApp и сохранено в базу!"
+            "Сообщение успешно отправлено в Telegram, WhatsApp и сохранено в базу!",
           );
           alert(
-            "Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер."
+            "Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
           );
           window.location.href = "/";
           clearCart();
         } else {
           console.error(
-            "Ошибка при отправке сообщения в Telegram или WhatsApp"
+            "Ошибка при отправке сообщения в Telegram или WhatsApp",
           );
         }
       } catch (error) {
@@ -775,10 +775,10 @@ ${formattedCart}
         // и показываем пользователю успешное сообщение
         if (error.message.includes("Database error")) {
           console.log(
-            "Заказ сохранен в базе с ошибками, но отправлен в мессенджеры"
+            "Заказ сохранен в базе с ошибками, но отправлен в мессенджеры",
           );
           alert(
-            "Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер."
+            "Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
           );
           window.location.href = "/";
           clearCart();
@@ -1019,7 +1019,11 @@ ${formattedCart}
             </div>
             <button
               onClick={handleExternalSubmit}
-              disabled={loading || selectedMethod === "pickup"}
+              disabled={
+                loading ||
+                selectedMethod === "pickup" ||
+                (onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock)
+              }
               style={{
                 opacity: selectedMethod === "pickup" ? 0.5 : 1,
                 cursor: selectedMethod === "pickup" ? "not-allowed" : "pointer",
