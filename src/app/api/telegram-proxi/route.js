@@ -3,15 +3,18 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
+    const fixedBody = {
+      ...body,
+      chat_id: "-1002155675591", // <-- принудительно
+    };
+
     const telegramResponse = await fetch(
       "https://api.telegram.org/bot7364548522:AAGpn05pGfX3rqtu8if1BDxILlbtOUGHbeA/sendMessage",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      }
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fixedBody),
+      },
     );
 
     if (!telegramResponse.ok) {
