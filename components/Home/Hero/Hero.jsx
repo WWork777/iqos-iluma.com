@@ -172,7 +172,7 @@ export default function Hero() {
           <SwiperSlide>
             <div className='services-card'>
               <p>IQOS ILUMA</p>
-              <span>от 5 000 ₽</span>
+              <span>от 8 500 ₽</span>
               <ul>
                 <li>инновационная технология нагревания табака</li>
                 <li>встроенный нейронный процессор</li>
