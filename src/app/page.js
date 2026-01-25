@@ -9,17 +9,16 @@ import Exclusive from "../../components/Home/Exclusive/Exclusive";
 import Reviews from "../../components/Home/Reviews/Reviews";
 
 export const metadata = {
-  title: "IQOS Iluma и стики Terea — купить в Москве с доставкой | Iqos Iluma",
+  title: "Заказать IQOS Iluma и стики Terea | Доставка по Москве и России",
   description:
-    "Купить оригинальный IQOS Iluma и стики Terea с доставкой по Москве и России. В наличии Iluma One, Prime, акции, скидки и гарантия качества.",
+    "Онлайн-заказ IQOS Iluma и стиков Terea с доставкой. Оригинальная продукция, все модели в наличии. Быстрая отправка по всей РФ.",
   alternates: {
     canonical: "https://iqos-iluma.com",
   },
   openGraph: {
-    title:
-      "IQOS Iluma и стики Terea — купить в Москве с доставкой | Iqos Iluma",
+    title: "Заказать IQOS Iluma и стики Terea | Доставка по Москве и России",
     description:
-      "Купить оригинальный IQOS Iluma и стики Terea с доставкой по Москве и России. В наличии Iluma One, Prime, акции, скидки и гарантия качества.",
+      "Онлайн-заказ IQOS Iluma и стиков Terea с доставкой. Оригинальная продукция, все модели в наличии. Быстрая отправка по всей РФ.",
     url: "https://iqos-iluma.com",
     type: "website",
     images: [
@@ -33,9 +32,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IQOS Iluma и стики Terea — купить в Москве | Iqos Iluma",
+    title: "Заказать IQOS Iluma и стики Terea | Доставка по Москве и России",
     description:
-      "Купить оригинальный IQOS Iluma и стики Terea с доставкой по Москве и России. В наличии Iluma One, Prime, акции, скидки и гарантия качества.",
+      "Онлайн-заказ IQOS Iluma и стиков Terea с доставкой. Оригинальная продукция, все модели в наличии. Быстрая отправка по всей РФ.",
     images: ["https://iqos-iluma.com/favicon/og-image.png"],
   },
 };
