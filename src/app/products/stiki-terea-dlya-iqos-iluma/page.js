@@ -16,12 +16,12 @@ export async function generateMetadata() {
     description:
       "Купить стики Terea с доставкой. Лучший выбор вкусов и брендов!",
     alternates: {
-      canonical: `https://iqos-iluma.com/products/terea`,
+      canonical: `https://iqos-iluma.com/products/stiki-terea-dlya-iqos-iluma`,
     },
     openGraph: {
       title: `Купить стики Terea в IlumaPrime с доставкой по России`,
       description: `Купить стики Terea с доставкой. Лучший выбор вкусов и брендов!`,
-      url: `https://iqos-iluma.com/products/terea`,
+      url: `https://iqos-iluma.com/products/stiki-terea-dlya-iqos-iluma`,
       images: [
         {
           url: `/favicon/web-app-manifest-512x512`,
@@ -43,7 +43,9 @@ export default async function Page() {
 
   return (
     <div className="products-container">
-      <h1 style={{ position: "absolute", zIndex: "-9999" }}>Стики Terea</h1>
+      <h1 className="page-title">
+        Купить стики Terea для IQOS ILUMA в Москве и России
+      </h1>
       <ClientFilters items={items} />
     </div>
   );

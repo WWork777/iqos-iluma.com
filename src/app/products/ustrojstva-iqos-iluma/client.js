@@ -113,7 +113,7 @@ export default function ClientFilters({ items: initialItems }) {
       const newUrl = `?${params.toString()}`;
       router.replace(newUrl, { scroll: false });
     },
-    [selectedCategory, searchQuery, sortOrder, filters, router]
+    [selectedCategory, searchQuery, sortOrder, filters, router],
   );
 
   const fetchFilteredData = useCallback(
@@ -122,7 +122,7 @@ export default function ClientFilters({ items: initialItems }) {
       try {
         const activeFilters = overrideFilters || filters;
 
-        const res = await fetch("/api/filter/iqos", {
+        const res = await fetch("/api/filter/ustrojstva-iqos-iluma", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -143,7 +143,7 @@ export default function ClientFilters({ items: initialItems }) {
         setLoading(false);
       }
     },
-    [debouncedQuery, selectedCategory, sortOrder, filters]
+    [debouncedQuery, selectedCategory, sortOrder, filters],
   );
 
   // Обновление URL при изменении состояния

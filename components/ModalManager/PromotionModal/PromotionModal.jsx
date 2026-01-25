@@ -1,24 +1,24 @@
-'use client'
-import { useEffect, useState } from 'react';
-import styles from "./PromotionModal.module.scss"
+"use client";
+import { useEffect, useState } from "react";
+import styles from "./PromotionModal.module.scss";
 
 const PromotionModal = ({ allowClose = false, onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
-  
+
   useEffect(() => {
     // Устанавливаем таймер на 3 секунды
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 3000);
-    
+
     // Очищаем таймер при размонтировании компонента
     return () => clearTimeout(timer);
   }, []);
-  
+
   useEffect(() => {
-    document.body.style.overflow = isVisible ? 'hidden' : 'auto';
+    document.body.style.overflow = isVisible ? "hidden" : "auto";
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isVisible]);
 
@@ -37,7 +37,7 @@ const PromotionModal = ({ allowClose = false, onClose }) => {
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         {allowClose && (
-          <button 
+          <button
             className={styles.closeButton}
             onClick={handleClose} // Используем handleClose вместо setIsVisible(false)
             aria-label="Закрыть уведомление"
@@ -45,10 +45,13 @@ const PromotionModal = ({ allowClose = false, onClose }) => {
             &times;
           </button>
         )}
-        <a href="/products/iqos?category=standart">
+        <a href="/products/ustrojstva-iqos-iluma?category=standart">
           <div className={styles.leftHalf}>
             <h2>Новогодние Скидки</h2>
-            <p>До конца года вы можете приобрести продукцию Iluma Standart и Iluma Prime со скидкой</p>
+            <p>
+              До конца года вы можете приобрести продукцию Iluma Standart и
+              Iluma Prime со скидкой
+            </p>
           </div>
           <div className={styles.rightHalf}>
             <img src="/Promotion/promo.png" alt="" />

@@ -17,13 +17,13 @@ export default function ClientFilters({ items: initialItems }) {
 
   // Восстановление из URL
   const [selectedCategory, setSelectedCategory] = useState(
-    () => searchParams.getAll("category") || []
+    () => searchParams.getAll("category") || [],
   );
   const [searchQuery, setSearchQuery] = useState(
-    () => searchParams.get("search") || ""
+    () => searchParams.get("search") || "",
   );
   const [sortOrder, setSortOrder] = useState(
-    () => searchParams.get("sort") || "default"
+    () => searchParams.get("sort") || "default",
   );
 
   const [filters, setFilters] = useState(() => {
@@ -69,7 +69,7 @@ export default function ClientFilters({ items: initialItems }) {
     async (filtersArg = filters) => {
       setLoading(true);
       try {
-        const res = await fetch("/api/filter/devices", {
+        const res = await fetch("/api/filter/aksesuary-dlya-iqos-iluma", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -90,7 +90,7 @@ export default function ClientFilters({ items: initialItems }) {
         setLoading(false);
       }
     },
-    [debouncedQuery, selectedCategory, sortOrder, filters]
+    [debouncedQuery, selectedCategory, sortOrder, filters],
   );
 
   useEffect(() => {

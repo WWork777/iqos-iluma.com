@@ -17,12 +17,12 @@ export async function generateMetadata() {
     description:
       "Каталог аксессуаров для устройств IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!",
     alternates: {
-      canonical: `https://iqos-iluma.com/products/devices`,
+      canonical: `https://iqos-iluma.com/products/aksesuary-dlya-iqos-iluma`,
     },
     openGraph: {
       title: `Купить аксессуары для IQOS ILUMA в IlumaPrime с доставкой по России`,
       description: `Каталог аксессуаров для устройств IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!`,
-      url: `https://iqos-iluma.com/products/devices`,
+      url: `https://iqos-iluma.com/products/aksesuary-dlya-iqos-iluma`,
       images: [
         {
           url: `/favicon/web-app-manifest-512x512`,
@@ -44,8 +44,8 @@ export default async function Page() {
 
   return (
     <div className="products-container">
-      <h1 style={{ position: "absolute", zIndex: "-9999" }}>
-        Аксессуары Iluma
+      <h1 className="page-title">
+        Аксессуары для IQOS ILUMA в Москве и России
       </h1>
       <ClientFilters items={items} />
     </div>

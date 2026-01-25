@@ -32,7 +32,7 @@ const DeviceCategory = ({
   const handleClick = (id) => {
     setActiveId((prevId) => (prevId === id ? null : id));
     setSelectedCategory((prevSelected) =>
-      prevSelected.includes(id) ? [] : [id]
+      prevSelected.includes(id) ? [] : [id],
     );
   };
 
@@ -59,13 +59,22 @@ const DeviceCategory = ({
       </div>
       <div className="sort-container">
         <div className="mobile-categories">
-          <Link href="/products/iqos" className={`custom-button`}>
+          <Link
+            href="/products/ustrojstva-iqos-iluma"
+            className={`custom-button`}
+          >
             Устройства
           </Link>
-          <Link href="/products/terea" className={`custom-button`}>
+          <Link
+            href="/products/stiki-terea-dlya-iqos-iluma"
+            className={`custom-button`}
+          >
             Стики
           </Link>
-          <Link href="/products/devices" className={`custom-button active`}>
+          <Link
+            href="/products/aksesuary-dlya-iqos-iluma"
+            className={`custom-button active`}
+          >
             Аксессуары
           </Link>
         </div>

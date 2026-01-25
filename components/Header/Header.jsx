@@ -67,10 +67,10 @@ export default function Header() {
           </div>
         </Link>
         <div className="menu">
-          <Link href="/products/iqos">Устройства</Link>
+          <Link href="/products/ustrojstva-iqos-iluma">Устройства</Link>
           <Link href="/blog">Блог</Link>
-          <Link href="/products/terea">Стики</Link>
-          <Link href="/products/devices">Аксессуары</Link>
+          <Link href="/products/stiki-terea-dlya-iqos-iluma">Стики</Link>
+          <Link href="/products/aksesuary-dlya-iqos-iluma">Аксессуары</Link>
           <Link href="/products">Каталог</Link>
           <Link href="/contacts">Контакты</Link>
         </div>
@@ -226,8 +226,10 @@ export default function Header() {
             </div>
             <Link
               className="link-close"
-              href="/"
-              onClick={(e) => handleLinkClick(e, "/products/iqos")}
+              href="/products/ustrojstva-iqos-iluma"
+              onClick={(e) =>
+                handleLinkClick(e, "/products/ustrojstva-iqos-iluma")
+              }
             >
               Устройства
             </Link>
@@ -240,15 +242,19 @@ export default function Header() {
             </Link>
             <Link
               className="link-close"
-              href="/products/terea"
-              onClick={(e) => handleLinkClick(e, "/products/terea")}
+              href="/products/stiki-terea-dlya-iqos-iluma"
+              onClick={(e) =>
+                handleLinkClick(e, "/products/stiki-terea-dlya-iqos-iluma")
+              }
             >
               Стики
             </Link>
             <Link
               className="link-close"
-              href="/products/devices"
-              onClick={(e) => handleLinkClick(e, "/products/devices")}
+              href="/products/aksesuary-dlya-iqos-iluma"
+              onClick={(e) =>
+                handleLinkClick(e, "/products/aksesuary-dlya-iqos-iluma")
+              }
             >
               Аксессуары
             </Link>

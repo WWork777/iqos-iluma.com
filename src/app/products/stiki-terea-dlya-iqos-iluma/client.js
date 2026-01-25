@@ -17,15 +17,15 @@ export default function ClientFilters({ items: initialItems }) {
 
   // --- Инициализация состояния с защитой от undefined ---
   const [selectedCountries, setSelectedCountries] = useState(
-    searchParams.getAll("countries") || []
+    searchParams.getAll("countries") || [],
   );
 
   const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("search") || ""
+    searchParams.get("search") || "",
   );
 
   const [sortOrder, setSortOrder] = useState(
-    searchParams.get("sort") || "default"
+    searchParams.get("sort") || "default",
   );
 
   const [filters, setFilters] = useState(() => {
@@ -40,21 +40,21 @@ export default function ClientFilters({ items: initialItems }) {
         searchParams.get("hasCapsule") === "true"
           ? true
           : searchParams.get("hasCapsule") === "false"
-          ? false
-          : null,
+            ? false
+            : null,
       nalichie:
         searchParams.get("nalichie") === "true"
           ? true
           : searchParams.get("nalichie") === "false"
-          ? false
-          : null,
+            ? false
+            : null,
       countrys: searchParams.getAll("countrys") || [],
       hit:
         searchParams.get("hit") === "true"
           ? true
           : searchParams.get("hit") === "false"
-          ? false
-          : null,
+            ? false
+            : null,
       brend: searchParams.getAll("brend") || [],
     };
   });
@@ -96,7 +96,7 @@ export default function ClientFilters({ items: initialItems }) {
     async (currentFilters = filters) => {
       setLoading(true);
       try {
-        const res = await fetch("/api/filter/terea", {
+        const res = await fetch("/api/filter/stiki-terea-dlya-iqos-iluma", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -116,7 +116,7 @@ export default function ClientFilters({ items: initialItems }) {
         setLoading(false);
       }
     },
-    [debouncedQuery, selectedCountries, sortOrder, filters]
+    [debouncedQuery, selectedCountries, sortOrder, filters],
   );
 
   useEffect(() => {

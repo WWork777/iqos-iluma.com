@@ -64,8 +64,18 @@
   h1 {
     text-align: left;
     margin-bottom: 0px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 32px;
+    color: white;
+
+    @media (max-width: 600px) {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    @media (max-width: 400px) {
+      font-size: 16px;
+    }
   }
   .filter-container {
     display: flex;
