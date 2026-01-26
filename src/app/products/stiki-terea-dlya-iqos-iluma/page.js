@@ -10,11 +10,11 @@ async function fetchItems() {
 }
 
 export async function generateMetadata() {
-  const title = "Купить стики Terea в IqosIluma с доставкой по России";
+  const title = "Стики Iqos Iluma Terea";
   return {
     title,
     description:
-      "Купить стики Terea с доставкой. Лучший выбор вкусов и брендов!",
+      "Стики Terea для Iqos Iluma. Большой выбор вкусов, доставка по России.",
     alternates: {
       canonical: `https://iqos-iluma.com/products/stiki-terea-dlya-iqos-iluma`,
     },

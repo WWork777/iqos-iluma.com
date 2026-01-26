@@ -28,12 +28,12 @@ export async function generateMetadata({ params }) {
       `Читайте статью "${article.title}" в блоге об IQOS Iluma и стиках Terea`,
     keywords: allKeywords.join(", "),
     alternates: {
-      canonical: `https://iluma-store.ru/blog/${article.slug}`,
+      canonical: `https://iqos-iluma.com/blog/${article.slug}`,
     },
     openGraph: {
       title: article.title,
       description: article.metaDescription || article.description,
-      url: `https://iluma-store.ru/blog/${article.slug}`,
+      url: `https://iqos-iluma.com/blog/${article.slug}`,
       type: "article",
       publishedTime: article.date,
       modifiedTime: article.updatedDate || article.date,
@@ -83,19 +83,19 @@ export default function ArticlePage({ params }) {
         "@type": "ListItem",
         position: 1,
         name: "Главная",
-        item: "https://iluma-store.ru",
+        item: "https://iqos-iluma.com",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Блог",
-        item: "https://iluma-store.ru/blog",
+        item: "https://iqos-iluma.com/blog",
       },
       {
         "@type": "ListItem",
         position: 3,
         name: article.title,
-        item: `https://iluma-store.ru/blog/${article.slug}`,
+        item: `https://iqos-iluma.com/blog/${article.slug}`,
       },
     ],
   };
@@ -112,19 +112,19 @@ export default function ArticlePage({ params }) {
     author: {
       "@type": "Person",
       name: article.author || "Эксперт IQOS",
-      url: "https://iluma-store.ru",
+      url: "https://iqos-iluma.com",
     },
     publisher: {
       "@type": "Organization",
       name: "IQOS Iluma Store",
       logo: {
         "@type": "ImageObject",
-        url: "https://iluma-store.ru/logo.png",
+        url: "https://iqos-iluma.com/logo.png",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://iluma-store.ru/blog/${article.slug}`,
+      "@id": `https://iqos-iluma.com/blog/${article.slug}`,
     },
   };
 

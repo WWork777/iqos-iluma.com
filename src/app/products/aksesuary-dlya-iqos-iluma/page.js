@@ -10,12 +10,11 @@ async function fetchItems() {
 }
 
 export async function generateMetadata() {
-  const title =
-    "Купить аксессуары для IQOS ILUMA в IqosIluma с доставкой по России";
+  const title = "Аксессуары Iqos Iluma";
   return {
     title,
     description:
-      "Каталог аксессуаров для устройств IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!",
+      "Аксессуары для Iqos Iluma. Все для удобного и безопастного использования.",
     alternates: {
       canonical: `https://iqos-iluma.com/products/aksesuary-dlya-iqos-iluma`,
     },

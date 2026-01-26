@@ -10,12 +10,11 @@ async function fetchItems() {
 }
 
 export async function generateMetadata() {
-  const title =
-    "Купить устройства IQOS ILUMA в IqosIluma с доставкой по России";
+  const title = "Iqos Iluma - модели и цены";
   return {
     title,
     description:
-      "Каталог устройств IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!",
+      "Все модели Iqos Iluma. Характеристики, цены, оригинальные устройства в наличии.",
     alternates: {
       canonical: `https://iqos-iluma.com/products/ustrojstva-iqos-iluma`,
     },
