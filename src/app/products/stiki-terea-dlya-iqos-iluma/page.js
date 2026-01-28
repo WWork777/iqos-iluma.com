@@ -45,7 +45,7 @@ async function fetchItems() {
 }
 
 export async function generateMetadata() {
-  const title = "Стики Iqos Iluma Terea";
+  const title = "Стики Iqos Iluma Terea Москва";
   return {
     title,
     description:

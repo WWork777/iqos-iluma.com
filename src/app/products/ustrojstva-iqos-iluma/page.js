@@ -45,16 +45,16 @@ async function fetchItems() {
 }
 
 export async function generateMetadata() {
-  const title = "Iqos Iluma - модели и цены";
+  const title = "Iqos Iluma Москва - модели и цены";
   return {
     title,
     description:
-      "Все модели Iqos Iluma. Характеристики, цены, оригинальные устройства в наличии.",
+      "Все модели Iqos Iluma в Москве. Характеристики, цены, оригинальные устройства в наличии.",
     alternates: {
       canonical: `https://iqos-iluma.com/products/ustrojstva-iqos-iluma`,
     },
     openGraph: {
-      title: `Купить устройства IQOS ILUMA в IqosIluma с доставкой по России`,
+      title: `Купить устройства IQOS ILUMA в IqosIluma с доставкой по Мсокве и России`,
       description: `Каталог устройствв IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!`,
       url: `https://iqos-iluma.com/products/ustrojstva-iqos-iluma`,
       images: [
