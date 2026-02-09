@@ -4,6 +4,7 @@ import { useContext, useRef, useState, useMemo } from "react";
 import { CartContext } from "@/cart/add/cart";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
+import { simpleLogger } from "@/utils/simpleLogger";
 
 const CheckoutPage = () => {
   const [selectedMethod, setSelectedMethod] = useState("delivery");
@@ -168,8 +169,25 @@ const CheckoutPage = () => {
     e.preventDefault();
     setLoading(true);
 
+    // Начинаем логирование процесса
+    await simpleLogger.logOrderSuccess({
+      customerName: formData.lastName || "не указано",
+      phoneNumber: formData.phoneNumber,
+      totalAmount: calculateTotalPrice(),
+      deliveryMethod: selectedMethod,
+      message: "Начало оформления заказа",
+      isFirstOrder: null,
+    });
+
     // Минимальная проверка телефона
     if (!formData.phoneNumber) {
+      await simpleLogger.logOrderError({
+        errorType: "Validation error",
+        errorMessage: "Phone number is empty",
+        phoneNumber: "",
+        totalAmount: 0,
+        customerName: formData.lastName || "не указано",
+      });
       alert("Введите номер телефона");
       setLoading(false);
       return;
@@ -177,6 +195,13 @@ const CheckoutPage = () => {
 
     const phoneDigits = formData.phoneNumber.replace(/\D/g, "");
     if (phoneDigits.length < 11) {
+      await simpleLogger.logOrderError({
+        errorType: "Validation error",
+        errorMessage: "Invalid phone number",
+        phoneNumber: formData.phoneNumber,
+        totalAmount: calculateTotalPrice(),
+        customerName: formData.lastName || "не указано",
+      });
       alert("Введите корректный номер телефона");
       setLoading(false);
       return;
@@ -185,7 +210,7 @@ const CheckoutPage = () => {
     const totalPrice = calculateTotalPrice();
     const site = "iqos-iluma.com";
 
-    // Список городов Москвы
+    // Список городов Москвы (оставляем как есть)
     const moscowCities = [
       "москва",
       "зеленоград",
@@ -684,7 +709,23 @@ const CheckoutPage = () => {
       const phoneE164 = `+${phoneNorm}`;
 
       console.log("Starting order check...");
+
       const orderCheck = await checkPreviousOrders(phoneE164);
+
+      // Логируем результат проверки
+      if (!orderCheck.success) {
+        await simpleLogger.logOrderError({
+          customerName: formData.lastName || "не указано",
+          phoneNumber: formData.phoneNumber,
+          totalAmount: totalPrice,
+          errorType: "Order check failed",
+          errorMessage: orderCheck.error,
+          details: {
+            phone: phoneE164,
+            function: "checkPreviousOrders",
+          },
+        });
+      }
 
       const isFirstOrder = orderCheck.isFirstOrder;
       const previousOrdersCount = orderCheck.previousOrdersCount;
@@ -703,12 +744,10 @@ const CheckoutPage = () => {
       let statusNote = "";
 
       if (checkSuccess) {
-        // Если проверка успешна - показываем точный статус
         headerLine = isFirstOrder
           ? "🔥 НОВЫЙ КЛИЕНТ 🔥"
           : `📋 Повторный заказ (${previousOrdersCount + 1}-й по счету)`;
       } else {
-        // Если проверка не удалась - показываем это в сообщении
         headerLine = "🟡 КЛИЕНТ (статус не подтвержден)";
         statusNote = `\n⚠️ Проверка статуса клиента не удалась: ${checkError}`;
       }
@@ -728,17 +767,28 @@ ${selectedMethod === "delivery" ? `Город: ${formData.city || "Не указ
 ${formattedCart}
 
 Общая сумма: ${totalPrice} ₽
-      `;
+    `;
 
       console.log("Prepared Telegram message");
 
-      // 3. В ПЕРВУЮ ОЧЕРЕДЬ отправляем в Telegram (самое важное!)
+      // 3. В ПЕРВУЮ ОЧЕРЕДЬ отправляем в Telegram
       console.log("Sending to Telegram (highest priority)...");
       const telegramSent = await sendToTelegram(telegramMessage);
 
       if (!telegramSent) {
-        console.error("FAILED: Telegram not sent after all retries");
-        // Даже если не отправилось, продолжаем - возможно другие каналы сработают
+        // Логируем критическую ошибку Telegram
+        await simpleLogger.logOrderError({
+          customerName: formData.lastName || "не указано",
+          phoneNumber: formData.phoneNumber,
+          totalAmount: totalPrice,
+          errorType: "CRITICAL: Telegram send failed",
+          errorMessage: "Все 3 попытки отправки в Telegram провалились",
+          details: {
+            maxRetries: 3,
+            selectedMethod,
+            messageLength: telegramMessage.length,
+          },
+        });
       } else {
         console.log("SUCCESS: Telegram sent!");
       }
@@ -808,16 +858,41 @@ ${formattedCart}
             return true;
           } else {
             const errorText = await response.text();
+
+            await simpleLogger.logOrderError({
+              customerName: formData.lastName || "не указано",
+              phoneNumber: formData.phoneNumber,
+              totalAmount: totalPrice,
+              errorType: "Database save failed",
+              errorMessage: `HTTP ${response.status}: ${errorText}`,
+              details: {
+                endpoint: "/api/orders",
+                status: response.status,
+              },
+            });
+
             console.warn("WARNING: Database save failed:", errorText);
             return false;
           }
         } catch (error) {
+          await simpleLogger.logOrderError({
+            customerName: formData.lastName || "не указано",
+            phoneNumber: formData.phoneNumber,
+            totalAmount: totalPrice,
+            errorType: "Database error",
+            errorMessage: error.message,
+            details: {
+              endpoint: "/api/orders",
+              stack: error.stack,
+            },
+          });
+
           console.warn("WARNING: Database error:", error);
           return false;
         }
       };
 
-      // 7. Запускаем все остальные отправки параллельно (но не ждем их для пользователя)
+      // 7. Запускаем все остальные отправки параллельно
       const sendPromises = [];
 
       // Сохранение в базу данных
@@ -833,12 +908,33 @@ ${formattedCart}
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ text: telegramMessage }),
             });
+
             if (response.ok) {
               console.log("SUCCESS: Email sent");
             } else {
+              const errorText = await response.text();
+
+              await simpleLogger.logOrderError({
+                customerName: formData.lastName || "не указано",
+                phoneNumber: formData.phoneNumber,
+                totalAmount: totalPrice,
+                errorType: "Email send failed",
+                errorMessage: `HTTP ${response.status}: ${errorText}`,
+                details: { endpoint: "/api/email" },
+              });
+
               console.warn("WARNING: Email failed");
             }
           } catch (error) {
+            await simpleLogger.logOrderError({
+              customerName: formData.lastName || "не указано",
+              phoneNumber: formData.phoneNumber,
+              totalAmount: totalPrice,
+              errorType: "Email error",
+              errorMessage: error.message,
+              details: { endpoint: "/api/email" },
+            });
+
             console.warn("WARNING: Email error:", error);
           }
         })(),
@@ -860,28 +956,90 @@ ${formattedCart}
                 }),
               },
             );
+
             if (response.ok) {
               console.log("SUCCESS: WhatsApp sent");
             } else {
+              const errorText = await response.text();
+
+              await simpleLogger.logOrderError({
+                customerName: formData.lastName || "не указано",
+                phoneNumber: formData.phoneNumber,
+                totalAmount: totalPrice,
+                errorType: "WhatsApp send failed",
+                errorMessage: `HTTP ${response.status}: ${errorText}`,
+                details: {
+                  endpoint: "Green-API",
+                  chatId: `${formData.phoneNumber}@c.us`,
+                },
+              });
+
               console.warn("WARNING: WhatsApp failed");
             }
           } catch (error) {
+            await simpleLogger.logOrderError({
+              customerName: formData.lastName || "не указано",
+              phoneNumber: formData.phoneNumber,
+              totalAmount: totalPrice,
+              errorType: "WhatsApp error",
+              errorMessage: error.message,
+              details: { endpoint: "Green-API" },
+            });
+
             console.warn("WARNING: WhatsApp error:", error);
           }
         })(),
       );
 
-      // Запускаем фоновые отправки, но не ждем их завершения
-      Promise.allSettled(sendPromises)
-        .then((results) => {
-          console.log("Background sends completed:", results);
-        })
-        .catch((error) => {
-          console.log("Error in background sends:", error);
+      // Запускаем фоновые отправки
+      Promise.allSettled(sendPromises).then((results) => {
+        results.forEach((result, index) => {
+          if (result.status === "rejected") {
+            const processNames = ["Database", "Email", "WhatsApp"];
+            simpleLogger.logOrderError({
+              customerName: formData.lastName || "не указано",
+              phoneNumber: formData.phoneNumber,
+              totalAmount: totalPrice,
+              errorType: "Background process rejected",
+              errorMessage: result.reason?.message || "Unknown rejection",
+              details: {
+                processIndex: index,
+                processName: processNames[index] || "Unknown",
+              },
+            });
+          }
         });
 
-      // 8. ВСЕГДА показываем успех пользователю (Telegram уже отправлен или пытался отправиться)
+        // После всех отправок логируем итоговый успех
+        simpleLogger.logOrderSuccess({
+          customerName: formData.lastName || "не указано",
+          phoneNumber: formData.phoneNumber,
+          totalAmount: totalPrice,
+          deliveryMethod: selectedMethod,
+          isFirstOrder: isFirstOrder,
+          previousOrdersCount: previousOrdersCount,
+          message: "Заказ полностью обработан и отправлен",
+          details: {
+            telegramSent,
+            cartItemsCount: cartItems.length,
+            city: formData.city || "не указан",
+          },
+        });
+      });
+
+      // 8. ВСЕГДА показываем успех пользователю
       console.log("Order processing completed");
+
+      // Логируем успешное завершение для пользователя
+      await simpleLogger.logOrderSuccess({
+        customerName: formData.lastName || "не указано",
+        phoneNumber: formData.phoneNumber,
+        totalAmount: totalPrice,
+        deliveryMethod: selectedMethod,
+        isFirstOrder: isFirstOrder,
+        message: "Пользователю показан успех заказа",
+      });
+
       alert(
         "✅ Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
       );
@@ -894,7 +1052,21 @@ ${formattedCart}
     } catch (error) {
       console.error("Unexpected error in main processing:", error);
 
-      // Даже при критической ошибке, Telegram уже пытался отправиться или сохранился в localStorage
+      // Логируем критическую ошибку
+      await simpleLogger.logOrderError({
+        customerName: formData.lastName || "не указано",
+        phoneNumber: formData.phoneNumber,
+        totalAmount: totalPrice,
+        errorType: "CRITICAL: Main processing error",
+        errorMessage: error.message,
+        details: {
+          stack: error.stack,
+          selectedMethod,
+          cartItemsCount: cartItems.length,
+          phoneDigits: phoneDigits.length,
+        },
+      });
+
       // Сохраняем дополнительную резервную копию
       localStorage.setItem(
         "failed_order_backup",
@@ -904,6 +1076,7 @@ ${formattedCart}
           totalPrice,
           timestamp: new Date().toISOString(),
           error: error.message,
+          stack: error.stack,
         }),
       );
 
