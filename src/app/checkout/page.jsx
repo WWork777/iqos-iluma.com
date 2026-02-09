@@ -774,6 +774,14 @@ ${formattedCart}
 Общая сумма: ${totalPrice} ₽
       `;
 
+      // Отправляем на почту
+
+          const res = await fetch("/api/email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({text: message}),
+          });
+
         // Отправляем в Telegram
 
         const telegramResponse = await fetch("/api/telegram-proxi", {
