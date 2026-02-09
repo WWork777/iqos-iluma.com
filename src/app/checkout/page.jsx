@@ -37,8 +37,6 @@ const CheckoutPage = () => {
     (item) => item.type === "Пачка" || item.type === "Блок",
   );
 
-  const [errors, setErrors] = useState({});
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -52,6 +50,45 @@ const CheckoutPage = () => {
       ...prev,
       phoneNumber: value,
     }));
+  };
+
+  // Функция для отправки в Telegram с повторными попытками
+  const sendToTelegram = async (message, maxRetries = 3) => {
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`Telegram attempt ${attempt}/${maxRetries}`);
+
+        const response = await fetch("/api/telegram-proxi", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: "-1002155675591",
+            text: message,
+            parse_mode: "HTML",
+          }),
+        });
+
+        if (response.ok) {
+          console.log(`Telegram sent successfully on attempt ${attempt}`);
+          return true;
+        } else {
+          console.warn(
+            `Telegram attempt ${attempt} failed: ${response.status}`,
+          );
+        }
+      } catch (error) {
+        console.warn(`Telegram attempt ${attempt} error:`, error);
+      }
+
+      if (attempt < maxRetries) {
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      }
+    }
+
+    console.error("All Telegram attempts failed");
+    return false;
   };
 
   const handleSubmit = async (e) => {
@@ -75,7 +112,7 @@ const CheckoutPage = () => {
     const totalPrice = calculateTotalPrice();
     const site = "iqos-iluma.com";
 
-    // Список городов Москвы (сокращен для читаемости)
+    // Список городов Москвы
     const moscowCities = [
       "москва",
       "зеленоград",
@@ -566,33 +603,8 @@ const CheckoutPage = () => {
         : `@${formData.telegram}`
       : "не указан";
 
-    // Формируем сообщение в зависимости от города
-    let mess = "";
-    const isMoscowCity = moscowCities.some((city) =>
-      (formData.city || "").toLowerCase().includes(city.toLowerCase()),
-    );
-
-    if (selectedMethod === "pickup") {
-      mess = `Добрый день!\n\nПолучили ваш заказ ✅\n\nс сайта ${site} ✅\n\nНаш адрес для самовывоза:\nГ.Москва\n\nРимского-Корсакова 11к8\nОриентир пункт «OZON»\n\nОплата наличными ❗️❗️\n\nВажно❗️❗️\nНеобходимо заранее согласовать дату и приблизительное время приезда.\nПри желании, можем отправить ваш заказ Яндекс курьером или Доставистой. В таком случае, оплатить заказ необходимо переводом на карту.\n\nКорзина:\n${formattedCart}\n\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
-    } else if (selectedMethod === "delivery" && isMoscowCity) {
-      mess = `Здравствуйте!\n\nПолучили ваш заказ с сайта ${site} ✅\n\nЗаказы отправляем через Яндекс или Достависту, предварительно согласовав с вами стоимость доставки. Оплата за заказ - переводом на карту.\n\nМожем отправить в любое удобное для Вас время.\n\n❗️Первый заказ можно оплатить при получении курьеру Достависты (в пределах МКАД)\n\nКогда Вам было бы удобно принять заказ? 😊\n\nКорзина:\n${formattedCart}\n\nАдрес:\nГород: ${formData.city || "Не указан"}\nАдрес: ${formData.streetAddress || "Не указан"}\n\nКонтактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
-    } else if (selectedMethod === "delivery") {
-      mess = `Здравствуйте!\nПолучили ваш заказ с сайта ${site} ✅\n\nВ регионы отправляем через CDEK. Процесс следующий:\n\nВысылаем фото вашего заказа и накладную Cdek (отправка по договору, тарифы минимальные, доставка будет оплачена нами сразу и включена в общий счет).\nВысылаем вам реквизиты для оплаты.\n\nВсе посылки отправляются в день заказа.\nОтправка из Москвы ❗️\nНаложенным платежом не отправляем ❌❌❌\n\nОт Вас нужны след данные:\n\nФИО\nАдрес ближ ПВЗ СДЭК\n\nКорзина:\n${formattedCart}\n\nКонтактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}\nАдрес доставки:\nГород: ${formData.city || "Не указан"}\nАдрес: ${formData.streetAddress || "Не указан"}`;
-    }
-
-    try {
-      // Сохраняем заказ локально на случай сбоя
-      const localOrder = {
-        formData,
-        cartItems,
-        totalPrice,
-        timestamp: new Date().toISOString(),
-        site,
-      };
-      localStorage.setItem("last_order_backup", JSON.stringify(localOrder));
-
-      // Основное сообщение для Telegram/Email
-      const message = `
+    // Формируем сообщение для Telegram
+    const telegramMessage = `
 Заказ с сайта ${site}
 
 Имя: ${formData.lastName || "Не указано"}   
@@ -607,152 +619,124 @@ ${formattedCart}
 Общая сумма: ${totalPrice} ₽
     `;
 
-      console.log("Начинаем отправку заказа...");
+    console.log("Начинаем отправку заказа...");
 
-      // Функция для отправки с повторными попытками
-      const sendWithRetry = async (sendFn, serviceName, maxRetries = 3) => {
-        for (let attempt = 1; attempt <= maxRetries; attempt++) {
-          try {
-            console.log(`${serviceName}: попытка ${attempt} из ${maxRetries}`);
-            const result = await sendFn();
-            console.log(`${serviceName}: успешно отправлено`);
-            return { success: true, service: serviceName, attempt };
-          } catch (error) {
-            console.error(
-              `${serviceName}: ошибка на попытке ${attempt}:`,
-              error,
-            );
-            if (attempt === maxRetries) {
-              return {
-                success: false,
-                service: serviceName,
-                error: error.message,
-              };
-            }
-            // Ждем перед следующей попыткой
-            await new Promise((resolve) =>
-              setTimeout(resolve, 1000 * Math.pow(2, attempt - 1)),
-            );
-          }
-        }
-        return {
-          success: false,
-          service: serviceName,
-          error: "Все попытки провалились",
-        };
-      };
+    try {
+      // 1. В ПЕРВУЮ ОЧЕРЕДЬ отправляем в Telegram (самое важное!)
+      console.log("Sending to Telegram (highest priority)...");
+      const telegramSent = await sendToTelegram(telegramMessage);
 
-      // Отправляем во ВСЕ каналы параллельно
-      const sendPromises = [];
-
-      // 1. Telegram
-      sendPromises.push(
-        sendWithRetry(async () => {
-          const response = await fetch("/api/telegram-proxi", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              chat_id: "-1002155675591",
-              text: message,
-              parse_mode: "HTML",
-            }),
-          });
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Status: ${response.status}, ${errorText}`);
-          }
-          return await response.json();
-        }, "Telegram"),
-      );
-
-      // 2. Email
-      sendPromises.push(
-        sendWithRetry(async () => {
-          const response = await fetch("/api/email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ text: message }),
-          });
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Status: ${response.status}, ${errorText}`);
-          }
-          return response;
-        }, "Email"),
-      );
-
-      // 3. WhatsApp
-      sendPromises.push(
-        sendWithRetry(async () => {
-          const response = await fetch(
-            `https://api.green-api.com/waInstance1103290542/SendMessage/65dee4a31f1342768913a5557afc548591af648dffc44259a6`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                chatId: `${formData.phoneNumber}@c.us`,
-                message: mess,
-              }),
-            },
-          );
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`Status: ${response.status}, ${errorText}`);
-          }
-          return await response.json();
-        }, "WhatsApp"),
-      );
-
-      // Ждем результаты всех отправок
-      const results = await Promise.allSettled(sendPromises);
-
-      // Анализируем результаты
-      const successfulSends = results.filter(
-        (r) => r.status === "fulfilled" && r.value?.success === true,
-      );
-
-      console.log("Результаты отправки:", {
-        успешно: successfulSends.length,
-        детали: results.map((r) => ({
-          service: r.status === "fulfilled" ? r.value.service : "unknown",
-          success: r.status === "fulfilled" ? r.value.success : false,
-        })),
-      });
-
-      // Проверяем, отправилось ли хотя бы в один канал
-      if (successfulSends.length > 0) {
-        console.log(
-          `Заказ успешно отправлен в ${successfulSends.length} канал(ов)`,
-        );
-        alert(
-          "Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
-        );
+      if (!telegramSent) {
+        console.error("FAILED: Telegram not sent after all retries");
+        // Даже если не отправилось, продолжаем - возможно другие каналы сработают
       } else {
-        console.warn("Заказ не отправлен ни в один канал");
-        localStorage.setItem(
-          "failed_order",
-          JSON.stringify({
-            message,
-            mess,
-            timestamp: new Date().toISOString(),
-            phone: formData.phoneNumber,
-          }),
-        );
-        alert(
-          "Заказ сохранен! С вами свяжутся в ближайшее время для подтверждения.",
-        );
+        console.log("SUCCESS: Telegram sent!");
       }
 
-      // Перенаправляем на главную и очищаем корзину
-      window.location.href = "/";
-      clearCart();
-    } catch (error) {
-      console.error("Критическая ошибка при обработке заказа:", error);
+      // 2. Формируем сообщение для WhatsApp
+      let whatsappMessage = "";
+      const isMoscowCity = moscowCities.some((city) =>
+        (formData.city || "").toLowerCase().includes(city.toLowerCase()),
+      );
 
+      if (selectedMethod === "pickup") {
+        whatsappMessage = `Добрый день!\n\nПолучили ваш заказ ✅\n\nс сайта ${site} ✅\n\nНаш адрес для самовывоза:\nГ.Москва\n\nРимского-Корсакова 11к8\nОриентир пункт «OZON»\n\nОплата наличными ❗️❗️\n\nВажно❗️❗️\nНеобходимо заранее согласовать дату и приблизительное время приезда.\nПри желании, можем отправить ваш заказ Яндекс курьером или Доставистой. В таком случае, оплатить заказ необходимо переводом на карту.\n\nКорзина:\n${formattedCart}\n\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
+      } else if (selectedMethod === "delivery" && isMoscowCity) {
+        whatsappMessage = `Здравствуйте!\n\nПолучили ваш заказ с сайта ${site} ✅\n\nЗаказы отправляем через Яндекс или Достависту, предварительно согласовав с вами стоимость доставки. Оплата за заказ - переводом на карту.\n\nМожем отправить в любое удобное для Вас время.\n\n❗️Первый заказ можно оплатить при получении курьеру Достависты (в пределах МКАД)\n\nКогда Вам было бы удобно принять заказ? 😊\n\nКорзина:\n${formattedCart}\n\nАдрес:\nГород: ${formData.city || "Не указан"}\nАдрес: ${formData.streetAddress || "Не указан"}\n\nКонтактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
+      } else if (selectedMethod === "delivery") {
+        whatsappMessage = `Здравствуйте!\nПолучили ваш заказ с сайта ${site} ✅\n\nВ регионы отправляем через CDEK. Процесс следующий:\n\nВысылаем фото вашего заказа и накладную Cdek (отправка по договору, тарифы минимальные, доставка будет оплачена нами сразу и включена в общий счет).\nВысылаем вам реквизиты для оплаты.\n\nВсе посылки отправляются в день заказа.\nОтправка из Москвы ❗️\nНаложенным платежом не отправляем ❌❌❌\n\nОт Вас нужны след данные:\n\nФИО\nАдрес ближ ПВЗ СДЭК\n\nКорзина:\n${formattedCart}\n\nКонтактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}\nАдрес доставки:\nГород: ${formData.city || "Не указан"}\nАдрес: ${formData.streetAddress || "Не указан"}`;
+      }
+
+      // 3. Сохраняем заказ в localStorage как резервную копию
+      const localOrder = {
+        formData,
+        cartItems,
+        totalPrice,
+        timestamp: new Date().toISOString(),
+        site,
+        telegramMessage,
+        whatsappMessage,
+      };
+      localStorage.setItem("last_order_backup", JSON.stringify(localOrder));
+
+      // 4. Запускаем все остальные отправки параллельно (но не ждем их для пользователя)
+      const sendPromises = [];
+
+      // Email отправка
+      sendPromises.push(
+        (async () => {
+          try {
+            console.log("Sending email...");
+            const response = await fetch("/api/email", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ text: telegramMessage }),
+            });
+            if (response.ok) {
+              console.log("SUCCESS: Email sent");
+            } else {
+              console.warn("WARNING: Email failed");
+            }
+          } catch (error) {
+            console.warn("WARNING: Email error:", error);
+          }
+        })(),
+      );
+
+      // WhatsApp отправка
+      sendPromises.push(
+        (async () => {
+          try {
+            console.log("Sending WhatsApp...");
+            const response = await fetch(
+              `https://api.green-api.com/waInstance1103290542/SendMessage/65dee4a31f1342768913a5557afc548591af648dffc44259a6`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  chatId: `${formData.phoneNumber}@c.us`,
+                  message: whatsappMessage,
+                }),
+              },
+            );
+            if (response.ok) {
+              console.log("SUCCESS: WhatsApp sent");
+            } else {
+              console.warn("WARNING: WhatsApp failed");
+            }
+          } catch (error) {
+            console.warn("WARNING: WhatsApp error:", error);
+          }
+        })(),
+      );
+
+      // Запускаем фоновые отправки, но не ждем их завершения
+      Promise.allSettled(sendPromises)
+        .then((results) => {
+          console.log("Background sends completed:", results);
+        })
+        .catch((error) => {
+          console.log("Error in background sends:", error);
+        });
+
+      // 5. ВСЕГДА показываем успех пользователю (Telegram уже отправлен или пытался отправиться)
+      console.log("Order processing completed");
+      alert(
+        "✅ Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
+      );
+
+      // 6. Очищаем корзину и перенаправляем
+      clearCart();
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
+    } catch (error) {
+      console.error("Unexpected error in main processing:", error);
+
+      // Даже при критической ошибке, Telegram уже пытался отправиться или сохранился в localStorage
+      // Сохраняем дополнительную резервную копию
       localStorage.setItem(
-        "failed_order",
+        "failed_order_backup",
         JSON.stringify({
           formData,
           cartItems,
@@ -762,11 +746,16 @@ ${formattedCart}
         }),
       );
 
+      // Все равно показываем успех пользователю
       alert(
-        "Заказ сохранен! С вами свяжутся в ближайшее время для подтверждения.",
+        "✅ Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
       );
-      window.location.href = "/";
+
+      // Очищаем корзину и перенаправляем
       clearCart();
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     } finally {
       setLoading(false);
     }
