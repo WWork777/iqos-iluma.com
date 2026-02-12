@@ -88,9 +88,9 @@ export default async function Page() {
 
   return (
     <div className="products-container">
-      <h1 style={{ position: "absolute", zIndex: "-9999" }}>
+      {/* <h1 style={{ position: "absolute", zIndex: "-9999" }}>
         Лимитированные Iqos Iluma
-      </h1>
+      </h1> */}
       <ClientFilters items={items} />
     </div>
   );
