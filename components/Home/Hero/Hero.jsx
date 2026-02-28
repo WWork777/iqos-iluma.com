@@ -19,7 +19,7 @@ export default function Hero() {
             Магазин IQOS Iluma | Оригинальные устройства и стики Terea
           </h1>
           <p className="hero-subtitle">
-            Купите новую IQOS Iluma и стики Terea c доставкой. Официальная
+            Забронируйте новую IQOS Iluma и стики Terea c доставкой. Официальная
             гарантия, вся Россия.
           </p>
         </div>

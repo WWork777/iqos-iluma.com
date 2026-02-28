@@ -1154,7 +1154,7 @@ ${formattedCart}
                     </div>
                     <div className="price">
                       <p>Количество: {item.quantity}</p>
-                      <p>Цена: ${item.price} ₽</p>
+                      <p>Цена: {item.price} ₽</p>
                     </div>
                   </div>
                 </li>
