@@ -1,25 +1,25 @@
-'use client';
-import { useEffect, useState } from 'react';
-import styles from "./BlockModal.module.scss"
+"use client";
+import { useEffect, useState } from "react";
+import styles from "./BlockModal.module.scss";
 
 const BlockModal = ({ allowClose = false, onClose }) => {
   const [isVisible, setIsVisible] = useState(true);
-  const [currentDate, setCurrentDate] = useState('');
+  const [currentDate, setCurrentDate] = useState("");
 
   useEffect(() => {
     // Форматирование текущей даты
     const now = new Date();
-    const formattedDate = now.toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
+    const formattedDate = now.toLocaleDateString("ru-RU", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
     });
     setCurrentDate(formattedDate);
 
     // Блокировка скролла
-    document.body.style.overflow = isVisible ? 'hidden' : 'auto';
+    document.body.style.overflow = isVisible ? "hidden" : "auto";
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, [isVisible]);
 
@@ -41,15 +41,21 @@ const BlockModal = ({ allowClose = false, onClose }) => {
           <button
             className={styles.closeButton}
             onClick={handleClose} // Изменено с setIsVisible(false) на handleClose
-            aria-label='Закрыть уведомление'
+            aria-label="Закрыть уведомление"
           >
             &times;
           </button>
         )}
-        <h2>График работы в праздничные дни</h2>
+        <h2>Добро пожаловать в Iqos Iluma</h2>
 
         <p>
-          С 1 по 3 января включительно наш магазин работать не будет.<br/> Планируйте покупки заблаговременно.
+          <br />
+          Мы не осуществляем дистанционную розничную продажу никотиносодержащей
+          продукции и устройств для потребления никотиносодержащей продукции.
+          <br />
+          Информация на сайте не предназначена для несовершеннолетних.
+          Подтвердите, что вам исполнилось 18 лет
+          <br />
         </p>
 
         {/* <p>
@@ -57,11 +63,28 @@ const BlockModal = ({ allowClose = false, onClose }) => {
           <strong>14:00</strong> по московскому времени. Желаем всем отличного
           дня!{' '}
         </p> */}
-
-        <button className={styles.continueButton}
-          onClick={handleClose} // Изменено с setIsVisible(false) на handleClose
-          aria-label='Закрыть уведомление'>
-            Понятно</button>
+        <div className={styles.buttons}>
+          <button
+            className={styles.continueButton}
+            onClick={handleClose} // Изменено с setIsVisible(false) на handleClose
+            aria-label="Закрыть уведомление"
+          >
+            Да
+          </button>
+          <button
+            className={styles.continueButton}
+            onClick={() => window.open("https://www.google.com/", "_self")}
+            aria-label="Закрыть уведомление"
+          >
+            Нет
+          </button>
+        </div>
+        <p>
+          Сайт представляет собой интернет-витрину, позволяет ознакомиться с
+          ассортиментом товаров и оформить бронирование для покупки в
+          стационарном магазине. Информация на сайте не является рекламой и
+          публичной офертой.
+        </p>
       </div>
     </div>
   );
