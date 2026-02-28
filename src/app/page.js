@@ -10,16 +10,16 @@ import Exclusive from "../../components/Home/Exclusive/Exclusive";
 import Reviews from "../../components/Home/Reviews/Reviews";
 
 export const metadata = {
-  title: "IQOS купить Москва | IQOS ILUMA",
+  title: "IQOS ЗабронироватьМосква | IQOS ILUMA",
   description:
-    "IQOS ILUMA - купить оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
+    "IQOS ILUMA - Забронироватьоригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
   alternates: {
     canonical: "https://iqos-iluma.com",
   },
   openGraph: {
-    title: "IQOS купить Москва | IQOS ILUMA",
+    title: "IQOS ЗабронироватьМосква | IQOS ILUMA",
     description:
-      "IQOS ILUMA - купить оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
+      "IQOS ILUMA - Забронироватьоригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
     url: "https://iqos-iluma.com",
     type: "website",
     images: [
@@ -33,9 +33,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "IQOS купить Москва | IQOS ILUMA",
+    title: "IQOS ЗабронироватьМосква | IQOS ILUMA",
     description:
-      "IQOS ILUMA - купить оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
+      "IQOS ILUMA - Забронироватьоригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
     images: ["https://iqos-iluma.com/favicon/og-image.png"],
   },
 };

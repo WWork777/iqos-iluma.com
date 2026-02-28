@@ -24,7 +24,7 @@ async function fetchItems() {
   const baseUrl =
     process.env.NODE_ENV === "production" && typeof window === "undefined"
       ? "http://localhost:3002"
-      : "";
+      : "http://localhost:3000";
 
   try {
     const apiUrl =
@@ -54,7 +54,7 @@ export async function generateMetadata() {
       canonical: `https://iqos-iluma.com/products/ustrojstva-iqos-iluma`,
     },
     openGraph: {
-      title: `Купить устройства IQOS ILUMA в IqosIluma с доставкой по Мсокве и России`,
+      title: `Забронироватьустройства IQOS ILUMA в IqosIluma с доставкой по Мсокве и России`,
       description: `Каталог устройствв IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!`,
       url: `https://iqos-iluma.com/products/ustrojstva-iqos-iluma`,
       images: [
@@ -88,7 +88,7 @@ export default async function Page() {
   return (
     <div className="products-container">
       <h1 className="page-title">
-        Оригинальные устройства IQOS ILUMA — купить в Москве и России
+        Оригинальные устройства IQOS ILUMA — Забронироватьв Москве и России
       </h1>
       <ClientFilters items={items} />
     </div>

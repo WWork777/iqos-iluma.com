@@ -315,7 +315,7 @@ Telegram: ${telegramUsername}
 Способ доставки: ${selectedMethod === "delivery" ? "Доставка" : "Самовывоз"}
 ${
   selectedMethod === "delivery"
-    ? `Город: ${formData.city || "Не указан"}\nАдрес: ${formData.streetAddress || "Не указан"}`
+    ? `Город: ${formData.city || "Не указан"}\n`
     : ""
 }
 
@@ -893,9 +893,9 @@ ${formattedCart}
                 formData.city.trim().toLowerCase().includes(city),
               )
             ) {
-              mess = `Здравствуйте!\n\nПолучили ваш заказ с сайта ${site} ✅\n\nЗаказы отправляем через Яндекс или Достависту, предварительно согласовав с вами стоимость доставки. Оплата за заказ - переводом на карту.\n\nМожем отправить в любое удобное для Вас время.\n\n❗️Первый заказ можно оплатить при получении курьеру Достависты (в пределах МКАД)\n\nКогда Вам было бы удобно принять заказ? 😊\n\nКорзина:\n${formattedCart}\n\nАдрес:\nГород: ${formData.city}\nАдрес: ${formData.streetAddress}\n\nКонтактные данные:\nИмя: ${formData.lastName}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
+              mess = `Здравствуйте!\n\nПолучили ваш заказ с сайта ${site} ✅\n\nЗаказы отправляем через Яндекс или Достависту, предварительно согласовав с вами стоимость доставки. Оплата за заказ - переводом на карту.\n\nМожем отправить в любое удобное для Вас время.\n\n❗️Первый заказ можно оплатить при получении курьеру Достависты (в пределах МКАД)\n\nКогда Вам было бы удобно принять заказ? 😊\n\nКорзина:\n${formattedCart}\n\nГород: ${formData.city}\n\nКонтактные данные:\nИмя: ${formData.lastName}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}`;
             } else if (selectedMethod === "delivery") {
-              mess = `Здравствуйте!\nПолучили ваш заказ с сайта ${site} ✅\n\nВ регионы отправляем через CDEK. Процесс следующий:\n\nВысылаем фото вашего заказа и накладную Cdek (отправка по договору, тарифы минимальные, доставка будет оплачена нами сразу и включена в общий счет).\nВысылаем вам реквизиты для оплаты.\n\nВсе посылки отправляются в день заказа.\nОтправка из Москвы ❗️\nНаложенным платежом не отправляем ❌❌❌\n\nОт Вас нужны след данные:\n\nФИО\nАдрес ближ ПВЗ СДЭК\n\nКорзина:\n${formattedCart}\n\nКонтактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}\nАдрес доставки:\nГород: ${formData.city || "Не указан"}\nАдрес: ${formData.streetAddress || "Не указан"}`;
+              mess = `Здравствуйте!\nПолучили ваш заказ с сайта ${site} ✅\n\nВ регионы отправляем через CDEK. Процесс следующий:\n\nВысылаем фото вашего заказа и накладную Cdek (отправка по договору, тарифы минимальные, доставка будет оплачена нами сразу и включена в общий счет).\nВысылаем вам реквизиты для оплаты.\n\nВсе посылки отправляются в день заказа.\nОтправка из Москвы ❗️\nНаложенным платежом не отправляем ❌❌❌\n\nОт Вас нужны след данные:\n\nФИО\nАдрес ближ ПВЗ СДЭК\n\nКорзина:\n${formattedCart}\n\nКонтактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}\nАдрес доставки:\nГород: ${formData.city || "Не указан"}`;
             }
 
             const idInstance = "1103290542";
@@ -983,7 +983,12 @@ ${formattedCart}
         <div className="plitka">
           <h1>Оформление заказа</h1>
           <h5>
-            ВАЖНО! Укажите Ваш номер в WhatsApp или Telegram ник для связи
+            ВАЖНО! Укажите Ваш номер в WhatsApp или Telegram ник для связи{" "}
+            <br></br>
+            <br></br>
+            Уважаемые покупатели, в связи с обновлением требований
+            законодательства со страницы бронирования товара убраны возможности
+            выбора способов доставки.
           </h5>
         </div>
         <form onSubmit={handleSubmit} ref={formRef}>
@@ -1055,11 +1060,34 @@ ${formattedCart}
                 {errors.phoneNumber}
               </p>
             )}
+
+            <div style={{ position: "relative", width: "100%" }}>
+              <input
+                type="text"
+                name="city"
+                placeholder="Город *"
+                value={formData.city}
+                onChange={handleInputChange}
+                disabled={onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock}
+              />
+              {errors.city && (
+                <p
+                  style={{
+                    color: "red",
+                    fontSize: "14px",
+                    marginTop: "5px",
+                    marginBottom: "0",
+                    fontWeight: "500",
+                  }}
+                >
+                  {errors.city}
+                </p>
+              )}
+            </div>
           </div>
 
-          <div className="checkout-delivery">
-            <h4>Способ доставки</h4>
-            <div className="checkout-delivery-method">
+          {/* <div className="checkout-delivery"> */}
+          {/* <div className="checkout-delivery-method">
               <button
                 type="button"
                 className={selectedMethod === "pickup" ? "active" : ""}
@@ -1093,55 +1121,9 @@ ${formattedCart}
                   Доставка
                 </button>
               )}
-            </div>
+            </div> */}
 
-            {selectedMethod === "delivery" && (
-              <div className="checkout-delivery-address">
-                <div style={{ position: "relative", width: "100%" }}>
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="Город *"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    disabled={
-                      onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock
-                    }
-                  />
-                  {errors.city && (
-                    <p
-                      style={{
-                        color: "red",
-                        fontSize: "14px",
-                        marginTop: "5px",
-                        marginBottom: "0",
-                        fontWeight: "500",
-                      }}
-                    >
-                      {errors.city}
-                    </p>
-                  )}
-                </div>
-
-                <input
-                  type="text"
-                  name="streetAddress"
-                  placeholder="Номер дома и название улицы"
-                  value={formData.streetAddress}
-                  onChange={handleInputChange}
-                  disabled={
-                    onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock
-                  }
-                />
-                {errors.streetAddress && (
-                  <p className="error" style={{ color: "red" }}>
-                    {errors.streetAddress}
-                  </p>
-                )}
-              </div>
-            )}
-
-            {selectedMethod === "pickup" && (
+          {/* {selectedMethod === "pickup" && (
               <div className="checkout-delivery-pickup">
                 <p style={{ color: "rgb(198, 58, 58)", fontWeight: "bold" }}>
                   ⚠️ Самовывоз временно недоступен. Пожалуйста, выберите
@@ -1149,7 +1131,7 @@ ${formattedCart}
                 </p>
               </div>
             )}
-          </div>
+          </div> */}
         </form>
       </div>
 
@@ -1190,7 +1172,7 @@ ${formattedCart}
                 cursor: selectedMethod === "pickup" ? "not-allowed" : "pointer",
               }}
             >
-              {loading ? "Загрузка..." : "Заказать"}
+              {loading ? "Загрузка..." : "Офрмить бронирование"}
             </button>
             {selectedMethod === "pickup" && (
               <p

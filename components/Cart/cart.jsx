@@ -124,7 +124,7 @@ const Cart = () => {
             {hasSticks() ? (
               <div style={{ textAlign: "center", color: "red" }}>
                 {onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock && (
-                  <p>Доставка доступна от 10 пачек или одного блока.</p>
+                  <p>Бронирование доступно от 10 пачек или одного блока.</p>
                 )}
               </div>
             ) : (
@@ -141,7 +141,7 @@ const Cart = () => {
               aria-label="Close"
               disabled={onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock}
             >
-              Перейти к оформлению
+              Перейти к бронированию
             </button>
             <button
               type="button"
@@ -149,7 +149,7 @@ const Cart = () => {
               data-bs-dismiss="offcanvas"
               aria-label="Close"
             >
-              Продолжить покупки
+              Продолжить
             </button>
           </div>
         ) : (
