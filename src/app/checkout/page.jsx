@@ -329,7 +329,7 @@ const CheckoutPage = () => {
   Способ доставки: ${selectedMethod === "delivery" ? "Доставка" : "Самовывоз"}
   ${
     selectedMethod === "delivery"
-      ? `Город: ${formData.city || "Не указан"}\n${cityStatus ? cityStatus : ""}`
+      ? `Город: ${formData.city || "Не указан"}`
       : ""
   }
 
