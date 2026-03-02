@@ -223,7 +223,7 @@ export default function ClientFilters({ items: initialItems }) {
                         <button
                           onClick={() => handleClick("Пачка")}
                           className={`choice-button ${activeButton === "Пачка" ? "active" : ""}`}
-                          disabled={needsVerification && !isAgeVerified}
+                          // disabled={needsVerification && !isAgeVerified}
                         >
                           Пачка
                         </button>
@@ -231,7 +231,7 @@ export default function ClientFilters({ items: initialItems }) {
                       <button
                         onClick={() => handleClick("Блок")}
                         className={`choice-button ${activeButton === "Блок" ? "active" : ""}`}
-                        disabled={needsVerification && !isAgeVerified}
+                        // disabled={needsVerification && !isAgeVerified}
                       >
                         Блок
                       </button>
@@ -252,14 +252,14 @@ export default function ClientFilters({ items: initialItems }) {
                     <div>
                       <button
                         onClick={decreaseQuantity}
-                        disabled={needsVerification && !isAgeVerified}
+                        // disabled={needsVerification && !isAgeVerified}
                       >
                         -
                       </button>
                       <span>{quantity}</span>
                       <button
                         onClick={increaseQuantity}
-                        disabled={needsVerification && !isAgeVerified}
+                        // disabled={needsVerification && !isAgeVerified}
                       >
                         +
                       </button>
@@ -273,7 +273,7 @@ export default function ClientFilters({ items: initialItems }) {
                       onClick={() =>
                         addToCart(product, "", quantity, setQuantity)
                       }
-                      disabled={needsVerification && !isAgeVerified}
+                      // disabled={needsVerification && !isAgeVerified}
                     >
                       <img
                         src="/card/cart.svg"
@@ -288,7 +288,7 @@ export default function ClientFilters({ items: initialItems }) {
                       onClick={() =>
                         addToCart(product, activeButton, quantity, setQuantity)
                       }
-                      disabled={needsVerification && !isAgeVerified}
+                      // disabled={needsVerification && !isAgeVerified}
                     >
                       <img
                         src="/card/cart.svg"
