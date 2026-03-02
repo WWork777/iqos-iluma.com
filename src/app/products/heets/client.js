@@ -24,6 +24,14 @@ export default function ClientFilters({ items: initialItems }) {
     brend: ["Heets"],
   });
 
+  // ✅ Состояние проверки возраста
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
+
+  useEffect(() => {
+    const ageVerified = localStorage.getItem("ageVerified") === "true";
+    setIsAgeVerified(ageVerified);
+  }, []);
+
   const debouncedQuery = useDebounce(searchQuery, 1000);
 
   const fetchFilteredData = useCallback(async () => {
@@ -80,7 +88,6 @@ export default function ClientFilters({ items: initialItems }) {
       brend: [],
     });
     setSelectedCountries([]);
-    setSelectedCategory([]);
     setSearchQuery("");
     setSortOrder("default");
     fetchFilteredData();
@@ -114,7 +121,12 @@ export default function ClientFilters({ items: initialItems }) {
             <div className="spinner"></div>
           </div>
         ) : (
-          <ProductGrid items={items} />
+          // ✅ Передаём состояние возраста
+          <ProductGrid
+            items={items}
+            isAgeVerified={isAgeVerified}
+            setIsAgeVerified={setIsAgeVerified}
+          />
         )}
       </div>
     </>

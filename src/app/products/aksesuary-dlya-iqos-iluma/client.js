@@ -15,7 +15,7 @@ export default function ClientFilters({ items: initialItems }) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  // Восстановление из URL
+  // --- Восстановление из URL ---
   const [selectedCategory, setSelectedCategory] = useState(
     () => searchParams.getAll("category") || [],
   );
@@ -44,9 +44,16 @@ export default function ClientFilters({ items: initialItems }) {
     };
   });
 
+  // ✅ Состояние проверки возраста
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
+  useEffect(() => {
+    const ageVerified = localStorage.getItem("ageVerified") === "true";
+    setIsAgeVerified(ageVerified);
+  }, []);
+
   const debouncedQuery = useDebounce(searchQuery, 1000);
 
-  // Обновление URL
+  // --- Обновление URL ---
   const updateURL = useCallback(() => {
     const params = new URLSearchParams();
 
@@ -95,7 +102,7 @@ export default function ClientFilters({ items: initialItems }) {
 
   useEffect(() => {
     fetchFilteredData();
-  }, [debouncedQuery, selectedCategory, sortOrder, filters]);
+  }, [debouncedQuery, selectedCategory, sortOrder, filters, fetchFilteredData]);
 
   useEffect(() => {
     updateURL();
@@ -151,7 +158,13 @@ export default function ClientFilters({ items: initialItems }) {
             <div className="spinner"></div>
           </div>
         ) : (
-          <ProductGrid items={items} loading={loading} />
+          // ✅ Передаем состояние возраста
+          <ProductGrid
+            items={items}
+            loading={loading}
+            isAgeVerified={isAgeVerified}
+            setIsAgeVerified={setIsAgeVerified}
+          />
         )}
       </div>
     </>
