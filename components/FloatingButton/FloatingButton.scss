@@ -1,0 +1,253 @@
+.floating-button-container {
+  position: fixed;
+  bottom: 60px;
+  left: 30px;
+  z-index: 1001;
+  animation: slideInLeft 0.5s ease;
+
+  @media (max-width: 768px) {
+    bottom: 60px;
+    left: 20px;
+  }
+
+  .floating-button {
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  .floating-button-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #56bdc5;
+    padding: 12px 24px;
+    border-radius: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+
+    // Основной эффект пульсации (мигания)
+    animation: pulse 2s infinite ease-in-out;
+
+    // Дополнительный эффект свечения
+    box-shadow: 0 0 15px rgba(86, 189, 197, 0.7);
+
+    // Эффект бегущей волны
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+      );
+      animation: shimmer 3s infinite;
+    }
+
+    &:hover {
+      background-color: #73b9be;
+      animation: none; // Останавливаем мигание при наведении
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(86, 189, 197, 0.9);
+
+      &::after {
+        animation: none; // Останавливаем волну при наведении
+      }
+    }
+
+    .telegram-icon {
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 2;
+
+      // Легкое покачивание иконки
+      animation: shake 4s infinite;
+    }
+
+    .button-text {
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+// Основная анимация пульсации (мигания)
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(86, 189, 197, 0.7);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px rgba(86, 189, 197, 0.9);
+    background-color: #5ecbd3; // Немного светлее в пике
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(86, 189, 197, 0.7);
+  }
+}
+
+// Альтернативный вариант с быстрым миганием (раскомментируйте если нужно)
+/*
+@keyframes quickPulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 15px rgba(86, 189, 197, 0.7);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 30px rgba(86, 189, 197, 1);
+    background-color: #6fd1d9;
+  }
+}
+*/
+
+// Анимация бегущей волны
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  20% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+// Анимация покачивания иконки
+@keyframes shake {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  2% {
+    transform: rotate(5deg);
+  }
+  4% {
+    transform: rotate(-5deg);
+  }
+  6% {
+    transform: rotate(3deg);
+  }
+  8% {
+    transform: rotate(-3deg);
+  }
+  10% {
+    transform: rotate(0deg);
+  }
+}
+
+// Анимация появления
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Адаптация для мобильных устройств
+@media (max-width: 768px) {
+  .floating-button-container {
+    .floating-button-content {
+      padding: 10px 20px;
+
+      // Уменьшаем интенсивность анимации на мобильных
+      animation: pulseMobile 2s infinite ease-in-out;
+
+      .telegram-icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .button-text {
+        font-size: 14px;
+      }
+    }
+  }
+
+  @keyframes pulseMobile {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 10px rgba(86, 189, 197, 0.6);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(86, 189, 197, 0.8);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 10px rgba(86, 189, 197, 0.6);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-button-container {
+    .floating-button-content {
+      padding: 8px 16px;
+
+      .telegram-icon {
+        width: 20px;
+        height: 20px;
+        animation: none; // Убираем покачивание на маленьких экранах
+      }
+
+      .button-text {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Дополнительный вариант с более агрессивным миганием
+// Добавьте этот класс к floating-button-content если нужно усилить эффект
+.high-visibility {
+  animation: superPulse 1.5s infinite ease-in-out;
+
+  @keyframes superPulse {
+    0%,
+    100% {
+      transform: scale(1);
+      background-color: #56bdc5;
+      box-shadow: 0 0 20px #56bdc5;
+    }
+    30% {
+      transform: scale(1.1);
+      background-color: #ff6b6b; // Красный для максимальной заметности
+      box-shadow: 0 0 40px #ff6b6b;
+    }
+    60% {
+      transform: scale(1.1);
+      background-color: #56bdc5;
+      box-shadow: 0 0 40px #56bdc5;
+    }
+  }
+}
