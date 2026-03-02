@@ -141,7 +141,7 @@ const Cart = () => {
               aria-label="Close"
               disabled={onlyPacksAndBlocks && totalQuantity < 10 && !hasBlock}
             >
-              Перейти к бронированию
+              Перейти к оформлению
             </button>
             <button
               type="button"

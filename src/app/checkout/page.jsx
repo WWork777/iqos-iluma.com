@@ -714,7 +714,7 @@ ${selectedMethod === "delivery" ? `🏙 Город: ${formData.city || "Не у�
                 cursor: selectedMethod === "pickup" ? "not-allowed" : "pointer",
               }}
             >
-              {loading ? "Загрузка..." : "Оформить бронирование"}
+              {loading ? "Загрузка..." : "Оформить заказ"}
             </button>
             {selectedMethod === "pickup" && (
               <p
