@@ -6,14 +6,14 @@ import Preview from "../../../components/Home/Preview/Preview";
 import Exclusive from "../../../components/Home/Exclusive/Exclusive";
 
 export const metadata = {
-  title: "забронировать IQOS ILUMA и стики Terea с доставкой по России",
+  title: "Купить IQOS ILUMA и стики Terea с доставкой по России",
   description:
     "Каталог устройств IQOS ILUMA и стиков Terea. Только оригинальная продукция. Быстрая доставка. IqosIluma.",
   alternates: {
     canonical: `https://iqos-iluma.com/products`,
   },
   openGraph: {
-    title: `забронировать IQOS ILUMA и стики Terea с доставкой по России`,
+    title: `Купить IQOS ILUMA и стики Terea с доставкой по России`,
     description: `Каталог устройств IQOS ILUMA и стиков Terea. Только оригинальная продукция. Быстрая доставка. IqosIluma.`,
     url: `https://iqos-iluma.com/products`,
     images: [

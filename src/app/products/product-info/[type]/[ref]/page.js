@@ -46,13 +46,13 @@ export async function generateMetadata({ params }) {
     const items = await fetchItems(type, ref);
     return {
       title: `Купить ${items.name} с доставкой по России`,
-      description: items.description || `забронировать ${items.name}`,
+      description: items.description || `купить ${items.name}`,
       alternates: {
         canonical: `https://iqos-iluma.com/products/product-info/${type}/${ref}`,
       },
       openGraph: {
         title: `Купить ${items.name} с доставкой по России`,
-        description: items.description || `забронировать ${items.name}`,
+        description: items.description || `купить ${items.name}`,
         url: `https://iqos-iluma.com/products/product-info/${type}/${ref}`,
         images: [
           {

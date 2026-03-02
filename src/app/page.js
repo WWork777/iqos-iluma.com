@@ -13,14 +13,14 @@ import ModalManager from "../../components/ModalManager/ModalManager";
 export const metadata = {
   title: "IQOS купить Москва | IQOS ILUMA",
   description:
-    "IQOS ILUMA - забронировать  оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
+    "IQOS ILUMA - купить оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
   alternates: {
     canonical: "https://iqos-iluma.com",
   },
   openGraph: {
     title: "IQOS купить Москва | IQOS ILUMA",
     description:
-      "IQOS ILUMA - забронировать  оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
+      "IQOS ILUMA - купить оригинальные устройства и стики в Москве. Гарантия, проверенное качество, доставка.",
     url: "https://iqos-iluma.com",
     type: "website",
     images: [

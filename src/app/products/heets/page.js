@@ -45,7 +45,7 @@ async function fetchItems() {
 }
 
 export async function generateMetadata() {
-  const title = "забронировать стики Heets в IqosIluma с доставкой по России";
+  const title = "Купить стики Heets в IqosIluma с доставкой по России";
   return {
     title,
     description:
