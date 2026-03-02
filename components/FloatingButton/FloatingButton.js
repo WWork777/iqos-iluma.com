@@ -13,7 +13,9 @@ const FloatingButton = () => {
         className="floating-button"
       >
         <div className="floating-button-content">
-          <span className="button-text">TG-BOT</span>
+          <span className="button-text">
+            Заказывай в <br></br>TG боте
+          </span>
         </div>
       </Link>
     </div>
