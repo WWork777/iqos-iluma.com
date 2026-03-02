@@ -6,7 +6,7 @@ import { Navigation } from "swiper/modules";
 import { CartContext } from "@/cart/add/cart";
 import Link from "next/link";
 import Image from "next/image";
-import eyeIcon from "/public/eye-closed.webp";
+// import eyeIcon from "/public/eye-closed.webp";
 
 import "swiper/css";
 import "swiper/css/navigation";
