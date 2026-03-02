@@ -109,7 +109,7 @@ const ProductCard = ({ item }) => {
               )}
               <div className="eye-overlay">
                 <Image
-                  src={eyeIcon}
+                  src="/card/eye-closed.webp"
                   alt="Возрастное ограничение 18+"
                   width={50}
                   height={50}
