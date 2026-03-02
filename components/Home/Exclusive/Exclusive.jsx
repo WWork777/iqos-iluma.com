@@ -172,7 +172,7 @@ const ProductCard = ({ item, isAgeVerified, onImageClick }) => {
               <button
                 className="product-button"
                 onClick={() => addToCart(item, "", quantity, setQuantity)}
-                disabled={needsVerification && !isAgeVerified}
+                // disabled={needsVerification && !isAgeVerified}
               >
                 <img src="/card/cart.svg" alt="" className="cart_exclusive" />
               </button>
@@ -182,7 +182,7 @@ const ProductCard = ({ item, isAgeVerified, onImageClick }) => {
                 onClick={() =>
                   addToCart(item, activeButton, quantity, setQuantity)
                 }
-                disabled={needsVerification && !isAgeVerified}
+                // disabled={needsVerification && !isAgeVerified}
               >
                 <img src="/card/cart.svg" alt="" className="cart_exclusive" />
               </button>
