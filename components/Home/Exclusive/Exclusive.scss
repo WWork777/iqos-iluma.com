@@ -541,4 +541,9 @@
 .cart_exclusive {
   width: 30px !important;
   height: 30px !important;
+
+  @media (max-width: 400px) {
+    width: 25px !important;
+    height: 25px !important;
+  }
 }
