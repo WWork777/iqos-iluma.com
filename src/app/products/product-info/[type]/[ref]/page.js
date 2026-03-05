@@ -45,14 +45,14 @@ export async function generateMetadata({ params }) {
   try {
     const items = await fetchItems(type, ref);
     return {
-      title: `забронировать ${items.name} с доставкой по России`,
-      description: items.description || `забронировать ${items.name}`,
+      title: `Купить ${items.name} с доставкой по России`,
+      description: items.description || `купить ${items.name}`,
       alternates: {
         canonical: `https://iqos-iluma.com/products/product-info/${type}/${ref}`,
       },
       openGraph: {
-        title: `забронировать ${items.name} с доставкой по России`,
-        description: items.description || `забронировать ${items.name}`,
+        title: `Купить ${items.name} с доставкой по России`,
+        description: items.description || `купить ${items.name}`,
         url: `https://iqos-iluma.com/products/product-info/${type}/${ref}`,
         images: [
           {

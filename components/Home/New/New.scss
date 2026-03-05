@@ -2,7 +2,7 @@
 
 .new {
   padding: 100px 15% 0;
-  //margin-bottom: 60px;
+
   .swiper-button-prev-new,
   .swiper-button-next-new {
     position: absolute;
@@ -31,7 +31,6 @@
     font-family: swiper-icons;
     text-transform: none !important;
     letter-spacing: 0;
-    //font-feature-settings: ;
     font-variant: initial;
     font-size: 18px;
     font-weight: 600;
@@ -43,18 +42,27 @@
     cursor: auto;
     pointer-events: none;
   }
+
   h1 {
     font-weight: 600;
   }
+
+  h2 {
+    color: rgb(0, 0, 0);
+    font-weight: 600;
+  }
+
   .swiper-slide {
     width: fit-content;
     display: flex;
     height: 100%;
   }
+
   .promo-catalog {
     padding: 40px 0;
     overflow: visible;
   }
+
   .product-card {
     padding: 0rem 1rem 1.5rem 1rem;
     border-radius: 1.125rem;
@@ -67,6 +75,7 @@
     width: 300px;
     height: 409px;
     flex: 1;
+
     .switch {
       display: flex;
       flex-direction: row;
@@ -74,6 +83,7 @@
       margin-bottom: 10px;
       gap: 10px;
       padding-left: 10px;
+
       button {
         border-radius: 8px;
         padding: 4px 10px;
@@ -91,24 +101,35 @@
         -moz-transition: 0.3s ease;
         -ms-transition: 0.3s ease;
         -o-transition: 0.3s ease;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
       }
+
       button.active {
         background-color: $blue;
         border: 1px solid $blue;
         color: white;
       }
     }
+
     img {
       width: 100%;
       height: 240px;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
+
     a {
       display: flex;
       flex: 1;
       align-items: start;
+      text-decoration: none;
     }
+
     .product-name {
       text-align: left;
       font-size: 18px;
@@ -123,9 +144,11 @@
       -ms-transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
       -o-transition: color 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
+
     .product-name:hover {
       color: $dark-blue;
     }
+
     .product-info {
       padding: 5px 10px;
       display: flex;
@@ -133,6 +156,7 @@
       flex-direction: row;
       align-items: end;
       justify-content: space-between;
+
       .product-price {
         display: flex;
         align-items: center;
@@ -143,6 +167,7 @@
         line-height: 100%;
         height: 40px;
       }
+
       .product-button {
         padding: 6px 14px;
         background-color: $blue;
@@ -160,7 +185,14 @@
         -moz-transition: background-color 0.3s ease;
         -ms-transition: background-color 0.3s ease;
         -o-transition: background-color 0.3s ease;
+
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+          pointer-events: none;
+        }
       }
+
       .product-button:hover {
         background-color: $dark-blue;
       }
@@ -170,14 +202,219 @@
       }
     }
   }
+
   .product-card:hover {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
   }
+
   .product-card:hover .product-image {
     transform: scale(1.05);
   }
 }
 
+/* Стили для контейнера изображения и размытия */
+.image-container {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  min-height: 240px;
+
+  @media (max-width: 992px) {
+    min-height: 180px;
+  }
+}
+
+.blurred-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  img.blurred {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    filter: blur(10px);
+    transition: filter 0.3s ease;
+
+    @media (max-width: 992px) {
+      height: 180px;
+      filter: blur(8px);
+    }
+  }
+
+  .eye-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+    pointer-events: none;
+    width: 100%;
+
+    span {
+      color: white;
+      font-size: 14px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 8px 16px;
+      border-radius: 20px;
+      white-space: nowrap;
+      font-weight: 500;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+      @media (max-width: 992px) {
+        font-size: 12px;
+        white-space: normal;
+        width: 90%;
+        padding: 6px 12px;
+      }
+    }
+
+    img {
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+      width: 50px !important;
+      height: 50px !important;
+
+      @media (max-width: 992px) {
+        width: 40px !important;
+        height: 40px !important;
+      }
+    }
+  }
+}
+
+/* Стили для модального окна подтверждения возраста */
+.age-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(3px);
+}
+
+.age-modal {
+  background-color: white;
+  padding: 30px;
+  border-radius: 1.125rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  border: none;
+
+  h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: left;
+    padding: 0 10px;
+  }
+
+  p {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 25px;
+    text-align: left;
+    padding: 0 10px;
+  }
+
+  .age-error {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin-bottom: 20px;
+    background: rgba(255, 107, 107, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    text-align: center;
+  }
+
+  .age-modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding: 0 10px;
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+
+      &.age-confirm {
+        background-color: #5871f3;
+        color: white;
+
+        &:hover {
+          background-color: #38458a;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(88, 113, 243, 0.3);
+        }
+      }
+
+      &.age-deny {
+        background-color: #f0f0f0;
+        color: #666;
+        border: 1px solid #c8c8ce;
+
+        &:hover {
+          background-color: #e0e0e0;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Медиа-запросы */
 @media screen and (max-width: 1785px) {
   .new {
     padding: 100px 10% 0;
@@ -187,6 +424,7 @@
 @media screen and (max-width: 1570px) {
   .new {
     padding: 100px 5% 0;
+
     .swiper-button-prev-new {
       left: -4%;
     }
@@ -199,6 +437,7 @@
 @media screen and (max-width: 1400px) {
   .new {
     padding: 100px 5% 0;
+
     .swiper-button-prev-new {
       left: -5%;
     }
@@ -211,19 +450,24 @@
 @media screen and (max-width: 992px) {
   .new {
     padding: 60px 3% 0;
+
     .swiper-button-prev-new,
     .swiper-button-next-new {
       display: none;
     }
+
     .product-card {
       width: 240px;
       height: 329px;
+
       img {
         height: 180px;
       }
+
       .product-name {
         font-size: 16px;
       }
+
       .product-info {
         .product-price {
           font-size: 16px;
@@ -233,11 +477,73 @@
           font-size: 14px;
         }
       }
+
       .switch {
         button {
           font-size: 12px;
         }
       }
     }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .age-modal {
+    padding: 25px;
+
+    h3 {
+      font-size: 22px;
+      padding: 0 5px;
+    }
+
+    p {
+      font-size: 16px;
+      padding: 0 5px;
+    }
+
+    .age-modal-buttons {
+      flex-direction: column;
+      gap: 10px;
+      padding: 0 5px;
+
+      button {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 486px) {
+  .age-modal {
+    padding: 20px;
+
+    h3 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 15px;
+    }
+
+    .age-error {
+      font-size: 13px;
+      padding: 8px;
+    }
+
+    .age-modal-buttons button {
+      padding: 10px 16px;
+      font-size: 15px;
+    }
+  }
+}
+.cart_exclusive {
+  width: 30px !important;
+  height: 30px !important;
+
+  @media (max-width: 400px) {
+    width: 25px !important;
+    height: 25px !important;
   }
 }

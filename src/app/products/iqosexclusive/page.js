@@ -46,7 +46,7 @@ async function fetchItems() {
 
 export async function generateMetadata() {
   const title =
-    "забронировать устройства IQOS ILUMA в IqosIluma с доставкой по России";
+    "Купить устройства IQOS ILUMA в IqosIluma с доставкой по России";
   return {
     title,
     description:
@@ -55,7 +55,7 @@ export async function generateMetadata() {
       canonical: `https://iqos-iluma.com/products/iqosexclusive`,
     },
     openGraph: {
-      title: `забронировать лимитированные устройства IQOS ILUMA в IqosIluma с доставкой по России`,
+      title: `Купить лимитированные устройства IQOS ILUMA в IqosIluma с доставкой по России`,
       description: `Каталог лимитированных устройствв IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!`,
       url: `https://iqos-iluma.com/products/iqosexclusive`,
       images: [

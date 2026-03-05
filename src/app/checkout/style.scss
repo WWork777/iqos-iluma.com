@@ -1,4 +1,4 @@
-@import '/public/const.scss';
+@import "/public/const.scss";
 
 @keyframes spin {
   0% {
@@ -12,11 +12,11 @@
   display: none !important;
 }
 .checkout-page {
-  .plitka{
-    h1{
+  .plitka {
+    h1 {
       margin-bottom: 20px;
     }
-    h5{
+    h5 {
       color: red;
     }
 
@@ -34,7 +34,7 @@
   .checkout-form {
     display: flex;
     flex-direction: column;
-    padding: 20px 0px;
+    // padding: 20px 0px;
     width: 60%;
     form {
       margin-top: 50px;
@@ -116,10 +116,9 @@
     background-color: white;
     border-radius: 15px;
     padding: 30px;
-    margin-top: 125px;
     width: 40%;
     height: fit-content;
-    .privacy-input{
+    .privacy-input {
       background-color: #acc864 !important;
       color: #acc864 !important;
       accent-color: #acc864;
@@ -217,9 +216,6 @@
     .checkout-table {
       width: 100% !important;
       margin-top: 50px !important;
-    }
-    .checkout-table {
-      margin-top: 0px !important;
     }
   }
 }

@@ -38,7 +38,7 @@ export default function Hero() {
               spaceBetween: 15,
             },
             640: {
-              slidesPerView: "auto",
+              slidesPerView: 1,
               spaceBetween: 15,
             },
             768: {
@@ -53,25 +53,20 @@ export default function Hero() {
         >
           <SwiperSlide>
             <div className="services-card">
-              <span className="tg_follov">Подпишись на телеграм!</span>
               {/* <span>IQOS ILUMA GALAXY</span> */}
-              <span className="tg_text">Будь в курсе новинок и акций</span>
+              <span className="tg_follov">ИСПОЛЬЗУЙ TELEGRAM БОТ!</span>
+              {/* <span>IQOS ILUMA GALAXY</span> */}
+              <span className="tg_text">Быстро, удобно, круглосуточно</span>
               <ul className="tg_ul">
-                <li>
-                  Первыми узнавайте о поступлении новых устройств IQOS Iluma и
-                  стиков Terea
-                </li>
+                <li>🛍️ Весь каталог IQOS и стиков в одном боте</li>
 
-                <li>Оперативные ответы на вопросы о продукции и доставке</li>
+                <li>⚡️ Оформляй заказ в пару кликов без лишних вопросов</li>
 
-                <li>
-                  Новости о выходе лимитированных коллекций и эксклюзивных
-                  моделей
-                </li>
+                <li>🎯 Только актуальные цены и наличие</li>
               </ul>
               <div className="tg_follov_btn">
-                <Link href={"https://t.me/Ilumastore2025"}>
-                  Подписаться
+                <Link href={"https://t.me/ilumaStore_official_bot"}>
+                  Перейти
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"

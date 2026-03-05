@@ -310,6 +310,10 @@
     background: linear-gradient(30deg, $blue 0%, $ilght-blue 80%);
     animation: slide1 0.5s ease;
     -webkit-animation: slide1 1s ease;
+
+    @media (max-width: 600px) {
+      width: 100% !important;
+    }
   }
   // .swiper-slide:nth-child(1){
   //     padding: 0 !important;
@@ -348,6 +352,10 @@
     background-color: white;
     animation: slide1 0.5s ease;
     -webkit-animation: slide1 1.5s ease;
+
+    @media (max-width: 600px) {
+      width: 100% !important;
+    }
     .services-card {
       p {
         width: 100%;
@@ -590,15 +598,17 @@
 .tg_follov {
   font-size: 30px !important;
   font-weight: bold !important;
+  width: 100% !important;
 
   @media (max-width: 430px) {
-    font-size: 20px !important;
+    line-height: 30px;
+    font-size: 26px !important;
   }
   @media (max-width: 414px) {
-    font-size: 16px !important;
+    font-size: 20px !important;
   }
   @media (max-width: 400px) {
-    font-size: 14px !important;
+    font-size: 18px !important;
   }
 }
 
@@ -608,7 +618,7 @@
   @media (max-width: 430px) {
     a {
       padding: 8px 16px !important;
-      font-size: 16px !important;
+      font-size: 18px !important;
     }
   }
   @media (max-width: 414px) {
@@ -620,32 +630,34 @@
   @media (max-width: 400px) {
     a {
       padding: 4px 8px !important;
-      font-size: 14px !important;
+      font-size: 18px !important;
     }
   }
 }
 
 .tg_text {
-  font-size: 20px !important;
+  font-size: 18px !important;
+  width: 100% !important;
 
   @media (max-width: 430px) {
-    font-size: 15px !important;
+    font-size: 16px !important;
     font-weight: 600;
+    margin-top: 5px;
   }
   @media (max-width: 414px) {
-    font-size: 14px !important;
+    font-size: 16px !important;
     font-weight: 600;
   }
   @media (max-width: 400px) {
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-weight: 600;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 430px) {
   .tg_ul {
     li {
-      font-size: 18px !important;
+      font-size: 15px !important;
     }
   }
 }
@@ -653,7 +665,7 @@
 @media (max-width: 414px) {
   .tg_ul {
     li {
-      font-size: 14px !important;
+      font-size: 15px !important;
     }
   }
 }
@@ -661,7 +673,7 @@
 @media (max-width: 400px) {
   .tg_ul {
     li {
-      font-size: 12px !important;
+      font-size: 14px !important;
     }
   }
 }

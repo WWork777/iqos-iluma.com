@@ -11,7 +11,7 @@ export default function ClientFilters({ items: initialItems }) {
   const [items, setItems] = useState(initialItems);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const [isAgeVerified, setIsAgeVerified] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -146,6 +146,11 @@ export default function ClientFilters({ items: initialItems }) {
     [debouncedQuery, selectedCategory, sortOrder, filters],
   );
 
+  useEffect(() => {
+    const ageVerified = localStorage.getItem("ageVerified") === "true";
+    setIsAgeVerified(ageVerified);
+  }, []);
+
   // Обновление URL при изменении состояния
   useEffect(() => {
     updateURL();
@@ -262,7 +267,12 @@ export default function ClientFilters({ items: initialItems }) {
             <div className="spinner"></div>
           </div>
         ) : (
-          <ProductGrid items={items} loading={loading} />
+          <ProductGrid
+            items={items}
+            loading={loading}
+            isAgeVerified={isAgeVerified}
+            setIsAgeVerified={setIsAgeVerified}
+          />
         )}
       </div>
     </>

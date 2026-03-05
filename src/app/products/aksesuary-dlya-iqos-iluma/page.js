@@ -54,7 +54,7 @@ export async function generateMetadata() {
       canonical: `https://iqos-iluma.com/products/aksesuary-dlya-iqos-iluma`,
     },
     openGraph: {
-      title: `забронировать аксессуары для IQOS ILUMA в IlumaPrime с доставкой по России`,
+      title: `Купить аксессуары для IQOS ILUMA в IlumaPrime с доставкой по России`,
       description: `Каталог аксессуаров для устройств IQOS ILUMA с доставкой по всей России. Лучший выбор вкусов и брендов!`,
       url: `https://iqos-iluma.com/products/aksesuary-dlya-iqos-iluma`,
       images: [

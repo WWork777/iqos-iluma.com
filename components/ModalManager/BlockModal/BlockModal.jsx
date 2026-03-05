@@ -2,36 +2,99 @@
 import { useEffect, useState } from "react";
 import styles from "./BlockModal.module.scss";
 
+const STORAGE_KEY = "user_confirmed_age";
+const CONFIRMATION_DURATION = 3 * 60 * 60 * 1000; // 3 часа в миллисекундах
+
 const BlockModal = ({ allowClose = false, onClose }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false); // По умолчанию false
   const [currentDate, setCurrentDate] = useState("");
+  const [isCheckingStorage, setIsCheckingStorage] = useState(true); // Флаг проверки
 
   useEffect(() => {
-    // Форматирование текущей даты
-    const now = new Date();
-    const formattedDate = now.toLocaleDateString("ru-RU", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-    setCurrentDate(formattedDate);
+    // Проверяем, подтверждал ли пользователь возраст ранее
+    const checkConfirmation = () => {
+      const storedData = localStorage.getItem(STORAGE_KEY);
 
-    // Блокировка скролла
-    document.body.style.overflow = isVisible ? "hidden" : "auto";
-    return () => {
-      document.body.style.overflow = "auto";
+      if (storedData) {
+        try {
+          const { confirmed, timestamp } = JSON.parse(storedData);
+
+          // Проверяем, подтверждено ли и не истекло ли время
+          if (confirmed && timestamp) {
+            const now = Date.now();
+            const timePassed = now - timestamp;
+
+            if (timePassed < CONFIRMATION_DURATION) {
+              // Подтверждение всё ещё действительно, не показываем модалку
+              setIsVisible(false);
+              setIsCheckingStorage(false);
+              return;
+            } else {
+              // Время истекло, удаляем данные
+              localStorage.removeItem(STORAGE_KEY);
+            }
+          }
+        } catch (error) {
+          // Если данные повреждены, удаляем их
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+
+      // Если дошли сюда, значит нужно показать модалку
+      setIsVisible(true);
+      setIsCheckingStorage(false);
     };
-  }, [isVisible]);
 
-  // Исправленная функция закрытия
-  const handleClose = () => {
+    checkConfirmation();
+  }, []); // Пустой массив зависимостей, проверяем только при монтировании
+
+  useEffect(() => {
+    if (!isCheckingStorage && isVisible) {
+      // Форматирование текущей даты
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString("ru-RU", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      });
+      setCurrentDate(formattedDate);
+
+      // Блокировка скролла
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = "auto";
+      };
+    }
+  }, [isCheckingStorage, isVisible]);
+
+  // Сохраняем подтверждение в localStorage
+  const saveConfirmation = () => {
+    const data = {
+      confirmed: true,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  };
+
+  // Обработчик положительного ответа
+  const handlePositiveResponse = () => {
+    saveConfirmation();
     setIsVisible(false);
-    // Вызываем колбэк onClose, если он передан
     if (onClose) {
       onClose();
     }
   };
 
+  // Обработчик отрицательного ответа - перенаправление
+  const handleNegativeResponse = () => {
+    window.open("https://www.google.com/", "_self");
+  };
+
+  // Пока проверяем localStorage, не рендерим ничего
+  if (isCheckingStorage) return null;
+
+  // Если модалка не должна быть видна, не рендерим
   if (!isVisible) return null;
 
   return (
@@ -40,51 +103,35 @@ const BlockModal = ({ allowClose = false, onClose }) => {
         {allowClose && (
           <button
             className={styles.closeButton}
-            onClick={handleClose} // Изменено с setIsVisible(false) на handleClose
+            onClick={handlePositiveResponse} // Сохраняем подтверждение при закрытии
             aria-label="Закрыть уведомление"
           >
             &times;
           </button>
         )}
-        <h2>Добро пожаловать в Iqos Iluma</h2>
+        <h2>Добро пожаловать в ИлюмаСтор</h2>
 
         <p>
-          <br />
-          Мы не осуществляем дистанционную розничную продажу никотиносодержащей
-          продукции и устройств для потребления никотиносодержащей продукции.
-          <br />
           Информация на сайте не предназначена для несовершеннолетних.
           Подтвердите, что вам исполнилось 18 лет
-          <br />
         </p>
 
-        {/* <p>
-          Сегодня <strong>{currentDate}</strong> наш магазин начнет работать с{' '}
-          <strong>14:00</strong> по московскому времени. Желаем всем отличного
-          дня!{' '}
-        </p> */}
         <div className={styles.buttons}>
           <button
             className={styles.continueButton}
-            onClick={handleClose} // Изменено с setIsVisible(false) на handleClose
-            aria-label="Закрыть уведомление"
+            onClick={handlePositiveResponse}
+            aria-label="Подтвердить возраст"
           >
             Да
           </button>
           <button
             className={styles.continueButton}
-            onClick={() => window.open("https://www.google.com/", "_self")}
-            aria-label="Закрыть уведомление"
+            onClick={handleNegativeResponse}
+            aria-label="Отказаться"
           >
             Нет
           </button>
         </div>
-        <p>
-          Сайт представляет собой интернет-витрину, позволяет ознакомиться с
-          ассортиментом товаров и оформить бронирование для покупки в
-          стационарном магазине. Информация на сайте не является рекламой и
-          публичной офертой.
-        </p>
       </div>
     </div>
   );

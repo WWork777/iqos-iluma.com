@@ -384,3 +384,239 @@
     font-size: 18px !important;
   }
 }
+.image-container-info {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  min-height: 400px;
+
+  @media (max-width: 768px) {
+    min-height: 300px;
+  }
+}
+
+.blurred-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  img.blurred {
+    width: 100%;
+    height: auto;
+    filter: blur(12px);
+    transition: filter 0.3s ease;
+    object-fit: contain;
+
+    @media (max-width: 768px) {
+      filter: blur(8px);
+    }
+  }
+
+  .eye-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    z-index: 10;
+    pointer-events: none;
+    width: 100%;
+
+    span {
+      color: white;
+      font-size: 18px;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 12px 24px;
+      border-radius: 30px;
+      white-space: nowrap;
+      font-weight: 500;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+        white-space: normal;
+        width: 90%;
+        padding: 10px 16px;
+      }
+    }
+
+    img {
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+      width: 70px !important;
+      height: 70px !important;
+      opacity: 0.9;
+
+      @media (max-width: 768px) {
+        width: 50px !important;
+        height: 50px !important;
+      }
+    }
+  }
+}
+
+.age-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.age-modal {
+  background-color: #1d1c1c;
+  padding: 40px;
+  border-radius: 20px;
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  animation: slideUp 0.3s ease;
+  border: 1px solid #444;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+  h3 {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  p {
+    color: #cccccc;
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+
+  .age-error {
+    color: #ff6b6b;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+  }
+
+  .age-modal-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+
+    button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex: 1;
+
+      &.age-confirm {
+        background-color: #5871f3;
+        color: white;
+
+        &:hover {
+          background-color: #38458a;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(88, 113, 243, 0.4);
+        }
+      }
+
+      &.age-deny {
+        background-color: #444444;
+        color: white;
+
+        &:hover {
+          background-color: #666666;
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(102, 102, 102, 0.4);
+        }
+      }
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Адаптация для мобильных устройств
+@media screen and (max-width: 768px) {
+  .age-modal {
+    padding: 30px;
+
+    h3 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+
+    .age-modal-buttons {
+      flex-direction: column;
+      gap: 15px;
+
+      button {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 486px) {
+  .age-modal {
+    padding: 25px;
+
+    h3 {
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 16px;
+    }
+
+    .age-error {
+      font-size: 14px;
+    }
+  }
+}

@@ -1,2 +1,5 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow:/checkout
+
+Sitemap: https://iluma-store.ru/sitemap.xml

@@ -1,31 +1,68 @@
 "use client";
 import { useEffect, useState } from "react";
-import PromotionModal from "./PromotionModal/PromotionModal";
+// import PromotionModal from "./PromotionModal/PromotionModal";
 import BlockModal from "./BlockModal/BlockModal";
 
 const ModalManager = () => {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [shouldShowBlockModal, setShouldShowBlockModal] = useState(false);
 
   useEffect(() => {
-    // Устанавливаем задержку перед появлением первой модалки
-    const timer = setTimeout(() => {
-      setCurrentStep(1);
-    }, 3000); // 3 секунды
+    // Проверяем, нужно ли показывать возрастную модалку
+    const checkIfNeeded = () => {
+      const storedData = localStorage.getItem("user_confirmed_age");
 
-    return () => clearTimeout(timer);
+      if (!storedData) {
+        // Если нет подтверждения, планируем показ через 3 секунды
+        const timer = setTimeout(() => {
+          setShouldShowBlockModal(true);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+      }
+
+      try {
+        const { confirmed, timestamp } = JSON.parse(storedData);
+        const now = Date.now();
+        const timePassed = now - timestamp;
+        const threeHours = 3 * 60 * 60 * 1000;
+
+        if (!confirmed || timePassed >= threeHours) {
+          // Подтверждение устарело или отсутствует, планируем показ через 3 секунды
+          const timer = setTimeout(() => {
+            setShouldShowBlockModal(true);
+          }, 3000);
+
+          return () => clearTimeout(timer);
+        }
+      } catch (error) {
+        // Ошибка парсинга, показываем модалку через 3 секунды
+        const timer = setTimeout(() => {
+          setShouldShowBlockModal(true);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+      }
+
+      // Если подтверждение актуально, не показываем модалку
+      return () => {};
+    };
+
+    const cleanup = checkIfNeeded();
+    return cleanup;
   }, []);
 
   const handleCloseBlock = () => {
-    setCurrentStep(2);
+    setShouldShowBlockModal(false);
+    // Здесь можно показать промо-модалку
   };
 
   const handleClosePromo = () => {
-    setCurrentStep(0);
+    // Закрытие промо-модалки
   };
 
   return (
     <>
-      {currentStep === 1 && (
+      {shouldShowBlockModal && (
         <BlockModal allowClose={false} onClose={handleCloseBlock} />
       )}
 

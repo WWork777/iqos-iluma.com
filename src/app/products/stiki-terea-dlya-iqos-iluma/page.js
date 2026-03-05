@@ -54,8 +54,8 @@ export async function generateMetadata() {
       canonical: `https://iqos-iluma.com/products/stiki-terea-dlya-iqos-iluma`,
     },
     openGraph: {
-      title: `забронировать стики Terea в IlumaPrime с доставкой по России`,
-      description: `забронировать стики Terea с доставкой. Лучший выбор вкусов и брендов!`,
+      title: `Купить стики Terea в IlumaPrime с доставкой по России`,
+      description: `Купить стики Terea с доставкой. Лучший выбор вкусов и брендов!`,
       url: `https://iqos-iluma.com/products/stiki-terea-dlya-iqos-iluma`,
       images: [
         {
