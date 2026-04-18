@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       - NODE_ENV=production
-      - VIRTUAL_HOST=iqos-iluma.com, www.iqos-iluma.com
+      - VIRTUAL_HOST=iqos-iluma.com, www.iqos-iluma.com, cdn.iqos-iluma.com
       - LETSENCRYPT_HOST=iqos-iluma.com, www.iqos-iluma.com
       - LETSENCRYPT_EMAIL=parsh@gmail.com
       - REDIRECT_www.iqos-iluma.com=iqos-iluma.com

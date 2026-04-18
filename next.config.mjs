@@ -1,35 +1,46 @@
-// next.config.mjs
 /** @type {import('next').NextConfig} */
+
+// Определяем, находимся ли мы в режиме продакшена
+const isProd = process.env.NODE_ENV === "production";
+const CDN_URL = "https://cdn.iqos-iluma.com";
+
 const nextConfig = {
-  // 1. Отключение уязвимых экспериментальных функций
+  // --- ДОБАВЛЕНО ДЛЯ CDN ---
+  // В продакшене все пути к статике (_next/static) будут вести на CDN
+  assetPrefix: isProd ? CDN_URL : undefined,
+
+  // Если используешь компонент <Image />, нужно разрешить домен CDN
+  images: {
+    domains: ["cdn.iqos-iluma.com"],
+    // Если используешь современные remotePatterns:
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.iqos-iluma.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
+  // -------------------------
+
+  // 1. Твои настройки экспериментальных функций
   experimental: {
     serverComponents: false,
     appDir: false,
     rsc: false,
   },
 
-  // 2. Заголовки безопасности
+  // 2. Заголовки безопасности (оставляем как есть)
   async headers() {
     return [
       {
         source: "/:path*",
         headers: [
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
             value:
@@ -49,19 +60,15 @@ const nextConfig = {
     ];
   },
 
-  // 3. Конфигурация безопасности сборки
   poweredByHeader: false,
   generateEtags: true,
 
-  // 4. Ограничение размеров загружаемых файлов
   serverRuntimeConfig: {
     maxRequestBodySize: "10mb",
   },
 
-  // 5. Включение сжатия
   compress: true,
 
-  // 6. Настройка перенаправлений для защиты
   async redirects() {
     return [
       {
@@ -72,7 +79,6 @@ const nextConfig = {
     ];
   },
 
-  // 7. CSP через Report-Only (настройте под свое приложение)
   async rewrites() {
     return {
       beforeFiles: [
@@ -92,5 +98,4 @@ const nextConfig = {
   },
 };
 
-// ES модульный экспорт
 export default nextConfig;
