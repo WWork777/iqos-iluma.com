@@ -24,7 +24,7 @@ export default function Preview() {
             className="preview-card"
           >
             <h3>Стики Terea</h3>
-            <p>от 3 300 ₽</p>
+            <p>от 3 500 ₽</p>
             <Image
               src={"/Home/Preview/terea.png"}
               alt="IQOS iLuma"
@@ -42,7 +42,7 @@ export default function Preview() {
               height={700}
             />
           </Link>
-          <Link href="/products/heets" className="preview-card">
+          {/* <Link href="/products/heets" className="preview-card">
             <h3>Стики Heets</h3>
             <p>от 6 000 ₽</p>
             <Image
@@ -51,7 +51,7 @@ export default function Preview() {
               width={500}
               height={700}
             />
-          </Link>
+          </Link> */}
           <Link
             href="/products/aksesuary-dlya-iqos-iluma"
             className="preview-card"
@@ -79,11 +79,24 @@ export default function Preview() {
               height={700}
             />
           </Link>
-          <Link href="/products/heets" className="preview-card">
+          {/* <Link href="/products/heets" className="preview-card">
             <h3>Стики Heets</h3>
             <p>от 6 000 ₽</p>
             <Image
               src={"/Home/Preview/heets.png"}
+              alt="IQOS iLuma"
+              width={500}
+              height={700}
+            />
+          </Link> */}
+          <Link
+            href="/products/aksesuary-dlya-iqos-iluma"
+            className="preview-card"
+          >
+            <h3>Аксессуары</h3>
+            <p>от 1490 ₽</p>
+            <Image
+              src={"/Home/Preview/device.png"}
               alt="IQOS iLuma"
               width={500}
               height={700}
