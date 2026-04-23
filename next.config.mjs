@@ -1,37 +1,17 @@
 /** @type {import('next').NextConfig} */
 
-// Определяем, находимся ли мы в режиме продакшена
-const isProd = process.env.NODE_ENV === "production";
-const CDN_URL = "https://cdn.iqos-iluma.com";
-
 const nextConfig = {
-  // --- ДОБАВЛЕНО ДЛЯ CDN ---
-  // В продакшене все пути к статике (_next/static) будут вести на CDN
-  assetPrefix: isProd ? CDN_URL : undefined,
-
-  // Если используешь компонент <Image />, нужно разрешить домен CDN
+  // 1. Настройки изображений (теперь только локальные или стандартные)
   images: {
-    domains: ["cdn.iqos-iluma.com"],
-    // Если используешь современные remotePatterns:
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "cdn.iqos-iluma.com",
-        port: "",
-        pathname: "/**",
-      },
-    ],
+    remotePatterns: [],
   },
-  // -------------------------
 
-  // 1. Твои настройки экспериментальных функций
+  // 2. Экспериментальные функции (очищено от невалидных ключей)
   experimental: {
-    serverComponents: false,
-    appDir: false,
-    rsc: false,
+    // В Next.js 15 appDir и rsc включены по умолчанию, удаляем их отсюда
   },
 
-  // 2. Заголовки безопасности (оставляем как есть)
+  // 3. Заголовки безопасности
   async headers() {
     return [
       {
@@ -63,6 +43,8 @@ const nextConfig = {
   poweredByHeader: false,
   generateEtags: true,
 
+  // serverRuntimeConfig устаревает, но пока можно оставить,
+  // если твой код на него опирается.
   serverRuntimeConfig: {
     maxRequestBodySize: "10mb",
   },
@@ -79,23 +61,8 @@ const nextConfig = {
     ];
   },
 
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: "/_next/static/chunks/rsc",
-          has: [
-            {
-              type: "header",
-              key: "x-rsc-validator",
-              value: ".+",
-            },
-          ],
-          destination: "/_next/static/chunks/rsc",
-        },
-      ],
-    };
-  },
+  // Убрали сложные rewrites для RSC, так как в стандартном режиме
+  // Next.js сам управляет этими путями
 };
 
 export default nextConfig;
