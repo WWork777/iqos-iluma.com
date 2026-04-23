@@ -63,7 +63,6 @@ export default function Reviews() {
                 <button className="swiper-button-prev-new"></button>
                 <button className="swiper-button-next-new"></button>
             </Swiper>
-            <p className='reviews-link'>Больше отзывов здесь: <a href="https://t.me/ilumareviews">t.me/ilumareviews</a></p>
         </div>
     )
 }

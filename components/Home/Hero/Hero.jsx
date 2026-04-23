@@ -53,49 +53,6 @@ export default function Hero() {
         >
           <SwiperSlide>
             <div className="services-card">
-              {/* <span>IQOS ILUMA GALAXY</span> */}
-              <span className="tg_follov">ИСПОЛЬЗУЙ TELEGRAM БОТ!</span>
-              {/* <span>IQOS ILUMA GALAXY</span> */}
-              <span className="tg_text">Быстро, удобно, круглосуточно</span>
-              <ul className="tg_ul">
-                <li>🛍️ Весь каталог IQOS и стиков в одном боте</li>
-
-                <li>⚡️ Оформляй заказ в пару кликов без лишних вопросов</li>
-
-                <li>🎯 Только актуальные цены и наличие</li>
-              </ul>
-              <div className="tg_follov_btn">
-                <Link href={"https://t.me/ilumaStore_official_bot"}>
-                  Перейти
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m9 6l6 6l-6 6"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-            {/* <Image
-              src={"/Home/Hero/IQOS Iluma i Galaxy Blue.png.webp"}
-              alt="IQOS Iluma"
-              width={1920}
-              height={1080}
-              loading="lazy"
-              priority={false}
-            /> */}
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="services-card">
               <p>Бронирование</p>
               <span>Дистанционная продаже не осуществляется</span>
               <div className="slide-icon">
@@ -215,58 +172,6 @@ export default function Hero() {
                 </svg>
               </div>
             </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className="services-card">
-              <p>Акция!</p>
-              <span>
-                Оставьте отзыв о покупке, пришлите скриншот — и получите скидку
-                500 рублей!
-              </span>
-              <div>
-                <Link href="https://yandex.ru/maps/org/ilyuma_stor/197216417279/">
-                  Оставить отзыв
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m9 6l6 6l-6 6"
-                    />
-                  </svg>
-                </Link>
-                <Link href="https://t.me/Ilumastore2025">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="0px"
-                    y="0px"
-                    width="100"
-                    height="100"
-                    viewBox="0 0 48 48"
-                  >
-                    <path d="M5.83,23.616c12.568-5.529,28.832-12.27,31.077-13.203c5.889-2.442,7.696-1.974,6.795,3.434 c-0.647,3.887-2.514,16.756-4.002,24.766c-0.883,4.75-2.864,5.313-5.979,3.258c-1.498-0.989-9.059-5.989-10.7-7.163 c-1.498-1.07-3.564-2.357-0.973-4.892c0.922-0.903,6.966-6.674,11.675-11.166c0.617-0.59-0.158-1.559-0.87-1.086 c-6.347,4.209-15.147,10.051-16.267,10.812c-1.692,1.149-3.317,1.676-6.234,0.838c-2.204-0.633-4.357-1.388-5.195-1.676 C1.93,26.43,2.696,24.995,5.83,23.616z"></path>
-                  </svg>
-                  <div>
-                    Telegram
-                    <span>@Ilumastore2025</span>
-                  </div>
-                </Link>
-              </div>
-            </div>
-            <Image
-              src={"/Home/Hero/iluma.webp"}
-              alt="IQOS Iluma"
-              width={1000}
-              height={1000}
-              loading="lazy"
-            />
           </SwiperSlide>
           <SwiperSlide>
             <div className="services-card">
