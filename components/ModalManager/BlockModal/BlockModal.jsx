@@ -111,9 +111,9 @@ const BlockModal = ({ allowClose = false, onClose }) => {
         )}
         <h2>Добро пожаловать в ИлюмаСтор</h2>
 
+        <p>Уважаемые покупатели! Поздравляем вас с весенними праздниками!</p>
         <p>
-          Информация на сайте не предназначена для несовершеннолетних.
-          Подтвердите, что вам исполнилось 18 лет
+          1 и 9 мая наш магазин работать не будет. Желаем отличных выходных!
         </p>
 
         <div className={styles.buttons}>
@@ -122,15 +122,15 @@ const BlockModal = ({ allowClose = false, onClose }) => {
             onClick={handlePositiveResponse}
             aria-label="Подтвердить возраст"
           >
-            Да
+            Закрыть
           </button>
-          <button
+          {/* <button
             className={styles.continueButton}
             onClick={handleNegativeResponse}
             aria-label="Отказаться"
           >
             Нет
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

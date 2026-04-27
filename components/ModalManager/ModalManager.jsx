@@ -65,13 +65,6 @@ const ModalManager = () => {
       {shouldShowBlockModal && (
         <BlockModal allowClose={false} onClose={handleCloseBlock} />
       )}
-
-      {/* {currentStep === 2 && (
-        <PromotionModal 
-          allowClose={true}
-          onClose={handleClosePromo}
-        />
-      )} */}
     </>
   );
 };
