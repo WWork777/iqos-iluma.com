@@ -8,8 +8,11 @@ export async function POST(request) {
       chat_id: "-1002155675591", // <-- принудительно
     };
 
+    // 🔥 ВОТ ЗДЕСЬ ИЗМЕНИЛАСЬ ССЫЛКА:
+    // Мы стучимся в ваш Cloudflare (который работает в РФ),
+    // а он уже сам передаст запрос в Telegram.
     const telegramResponse = await fetch(
-      "https://api.telegram.org/bot7364548522:AAGpn05pGfX3rqtu8if1BDxILlbtOUGHbeA/sendMessage",
+      "https://tg-proxy.parsikovevgenij470.workers.dev/bot7364548522:AAGpn05pGfX3rqtu8if1BDxILlbtOUGHbeA/sendMessage",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
