@@ -212,7 +212,7 @@ const CheckoutPage = () => {
     }
   };
 
-  // Функция для отправки в Telegram с повторными попытками
+  // Функция для отправки в Telegram
   const sendToTelegram = async (message, maxRetries = 3) => {
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
@@ -255,275 +255,117 @@ const CheckoutPage = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (validateForm()) {
-      const totalPrice = calculateTotalPrice();
-      const site = "iqos-iluma.com";
+    if (!validateForm()) {
+      setLoading(false);
+      return;
+    }
 
-      const formattedCart = cartItems
-        .map(
-          (item) =>
-            `- ${item.name} (${item.type || "обычный"}) x${item.quantity}: ${
-              item.price
-            } ₽`,
-        )
-        .join("\n");
+    const phoneNorm = formData.phoneNumber.replace(/\D/g, "");
+    const totalPrice = calculateTotalPrice();
+    const site = "iqos-iluma.com";
 
-      // Форматируем Telegram username
-      const telegramUsername = formData.telegram.trim()
-        ? formData.telegram.startsWith("@")
-          ? formData.telegram
-          : `@${formData.telegram}`
-        : "не указан";
+    // 1. Форматируем список товаров
+    const formattedCart = cartItems
+      .map(
+        (item) =>
+          `- ${item.name} (${item.type || "обычный"}) x${item.quantity}: ${item.price} ₽`,
+      )
+      .join("\n");
 
-      try {
-        // 1. Проверка предыдущих заказов
-        const phoneNorm = formData.phoneNumber.replace(/\D/g, "");
-        const phoneE164 = `+${phoneNorm}`;
+    const telegramUsername = formData.telegram.trim()
+      ? formData.telegram.startsWith("@")
+        ? formData.telegram
+        : `@${formData.telegram}`
+      : "не указан";
 
-        console.log("Starting order check...");
-        const orderCheck = await checkPreviousOrders(phoneE164);
+    // 2. Текст для TELEGRAM и EMAIL (Полный отчет для менеджера)
+    const tgMessage = `Заказ с сайта ${site}
 
-        const isFirstOrder = orderCheck.isFirstOrder;
-        const previousOrdersCount = orderCheck.previousOrdersCount;
-        const checkSuccess = orderCheck.success;
-        const checkError = orderCheck.error;
+📋 <b>НОВЫЙ ЗАКАЗ</b>
 
-        console.log("Order check completed:", {
-          isFirstOrder,
-          previousOrdersCount,
-          checkSuccess,
-          checkError,
-        });
+<b>Имя:</b> ${formData.lastName || "Не указано"}
+<b>Телефон:</b> +${formData.phoneNumber}
+<b>Telegram:</b> ${telegramUsername}
+<b>Способ доставки:</b> Доставка
+<b>Город:</b> ${formData.city || "Не указан"}
 
-        // 2. Подготавливаем сообщение для Email
-        const emailMessage = `
-Заказ с сайта ${site}
-
-📋 НОВЫЙ ЗАКАЗ
-
-Имя: ${formData.lastName || "Не указано"}   
-Телефон: +${formData.phoneNumber}
-Telegram: ${telegramUsername}
-Способ доставки: ${selectedMethod === "delivery" ? "Доставка" : "Самовывоз"}
-${selectedMethod === "delivery" ? `Город: ${formData.city || "Не указан"}` : ""}
-
-Корзина:
+<b>Корзина:</b>
 ${formattedCart}
 
-Общая сумма: ${totalPrice} ₽
-        `;
+<b>Общая сумма:</b> ${totalPrice} ₽`;
 
-        console.log("Prepared Email message");
+    // 3. Текст для WHATSAPP (Клиентский формат)
+    const isMoscow = moscowCitiesSet.has(formData.city?.toLowerCase().trim());
+    const autoReply = !isMoscow
+      ? "Здравствуйте! Получили ваше бронирование. \n\nВ регионы отправляем через CDEK. \n\nВсе посылки отправляются в день заказа.\nОтправка из Москвы ❗️\nНаложенным платежом не отправляем ❌❌❌\n\nОт Вас нужны следующие данные:\n\nФио \nТел получателя \nГород\nАдрес ближ пвз сдэк"
+      : "Здравствуйте! \n\nПолучили ваше бронирование. \n*❗️КОГДА И ПО КАКОМУ АДРЕСУ ВАМ УДОБНО ПОЛУЧИТЬ ЗАКАЗ?❗️*\n*❗️СТОИМОСТЬ ДОСТАВКИ ЗАВИСИТ ОТ АДРЕСА И БУДЕТ С ВАМИ СОГЛАСОВАНА❗️*";
 
-        // 3. Отправляем на почту
-        const sendEmail = async () => {
-          try {
-            console.log("Sending email...");
-            const res = await fetch("/api/email", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ text: emailMessage }),
-            });
-            if (res.ok) {
-              console.log("SUCCESS: Email sent");
-              return true;
-            } else {
-              console.warn("WARNING: Email failed");
-              return false;
-            }
-          } catch (error) {
-            console.warn("WARNING: Email error:", error);
-            return false;
-          }
-        };
+    const orderInfo = `📦 СОСТАВ ЗАКАЗА:\n${formattedCart}\n\n💰 Сумма: ${totalPrice} ₽\n\n👤 Контактные данные:\nИмя: ${formData.lastName || "Не указано"}\nТелефон: +${formData.phoneNumber}\nTelegram: ${telegramUsername}\n${formData.city ? `🏙 Город: ${formData.city}` : ""}`;
+    const waMessage = `${autoReply}\n\n${orderInfo}`;
 
-        // 4. Отправка в Telegram
-        const sendTelegramMessage = async () => {
-          try {
-            console.log("Sending to Telegram...");
-            const telegramSent = await sendToTelegram(emailMessage);
-            if (telegramSent) {
-              console.log("SUCCESS: Telegram sent");
-              return true;
-            } else {
-              console.warn("WARNING: Telegram failed");
-              return false;
-            }
-          } catch (error) {
-            console.warn("WARNING: Telegram error:", error);
-            return false;
-          }
-        };
+    try {
+      // 1. Проверка заказа
+      const orderCheck = await checkPreviousOrders(`+${phoneNorm}`);
 
-        // 5. Отправка WhatsApp
-        const sendWhatsApp = async () => {
-          try {
-            console.log("Sending WhatsApp...");
+      // 2. Сохранение в БД
+      const dbResponse = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_name: formData.lastName,
+          phone_number: `+${phoneNorm}`,
+          total_amount: totalPrice,
+          ordered_items: cartItems.map((i) => ({
+            product_name: `${i.name} (${i.type || "обычный"})`,
+            quantity: i.quantity,
+            price_at_time_of_order: i.price,
+          })),
+          is_first_order: orderCheck.isFirstOrder ? 1 : 0,
+        }),
+        signal: AbortSignal.timeout(5000),
+      });
 
-            // Проверяем, есть ли город в списке московских городов
-            const isMoscowCity =
-              formData.city &&
-              moscowCitiesSet.has(formData.city.toLowerCase().trim());
+      if (!dbResponse.ok) throw new Error("Database save failed");
 
-            let autoReply;
+      // 3. Параллельная отправка уведомлений (Не ждем их, чтобы ускорить интерфейс)
+      const idInstance = "1103290542";
+      const apiTokenInstance =
+        "65dee4a31f1342768913a5557afc548591af648dffc44259a6";
 
-            if (
-              !isMoscowCity &&
-              selectedMethod === "delivery" &&
-              formData.city.trim()
-            ) {
-              // Если город не из списка - специальное сообщение для регионов
-              autoReply = `Здравствуйте! Получили ваше бронирование 
+      Promise.allSettled([
+        // WhatsApp
+        fetch(
+          `https://api.green-api.com/waInstance${idInstance}/SendMessage/${apiTokenInstance}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              chatId: `${phoneNorm}@c.us`,
+              message: waMessage,
+            }),
+          },
+        ),
+        // Telegram
+        sendToTelegram(tgMessage),
+        // Email
+        fetch("/api/email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: tgMessage }),
+        }),
+      ]);
 
-В регионы отправляем через CDEK. 
-
-Все посылки отправляются в день заказа.
-Отправка из Москвы ❗️
-Наложенным платежом не отправляем ❌❌❌
-
-От Вас нужны следующие данные:
-
-Фио 
-Тел получателя 
-Город
-Адрес ближ пвз сдэк`;
-            } else {
-              // Стандартное сообщение для Москвы и области или если город не указан
-              autoReply = `Здравствуйте! 
-
-Получили ваше бронирование 
-
-*❗️КОГДА И ПО КАКОМУ АДРЕСУ ВАМ УДОБНО ПОЛУЧИТЬ ЗАКАЗ?❗️*
-*❗️СТОИМОСТЬ ДОСТАВКИ ЗАВИСИТ ОТ АДРЕСА И БУДЕТ С ВАМИ СОГЛАСОВАНА❗️*`;
-            }
-
-            const orderInfo = `
-📦 СОСТАВ ЗАКАЗА:
-${formattedCart}
-
-💰 Сумма: ${totalPrice} ₽
-
-👤 Контактные данные:
-Имя: ${formData.lastName || "Не указано"}
-Телефон: +${formData.phoneNumber}
-Telegram: ${telegramUsername}
-
-${selectedMethod === "delivery" ? `🏙 Город: ${formData.city || "Не указан"}` : ""}`;
-
-            // Объединяем автоответ с информацией о заказе
-            const fullMessage = `${autoReply}\n\n${orderInfo}`;
-
-            const idInstance = "1103290542";
-            const apiTokenInstance =
-              "65dee4a31f1342768913a5557afc548591af648dffc44259a6";
-
-            const response = await fetch(
-              `https://api.green-api.com/waInstance${idInstance}/SendMessage/${apiTokenInstance}`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  chatId: `${formData.phoneNumber}@c.us`,
-                  message: fullMessage,
-                }),
-              },
-            );
-
-            if (response.ok) {
-              console.log("SUCCESS: WhatsApp sent");
-              return true;
-            } else {
-              const errorText = await response.text();
-              console.warn("WARNING: WhatsApp failed:", errorText);
-              return false;
-            }
-          } catch (error) {
-            console.warn("WARNING: WhatsApp error:", error);
-            return false;
-          }
-        };
-
-        // 6. Сохранение в базу данных
-        const saveToDb = async () => {
-          try {
-            const orderData = {
-              customer_name: formData.lastName.trim() || "Не указано",
-              phone_number: phoneE164,
-              is_delivery: selectedMethod === "delivery",
-              city:
-                formData.city.trim() ||
-                (selectedMethod === "delivery" ? "Не указано" : "Москва"),
-              total_amount: totalPrice,
-              address:
-                formData.streetAddress.trim() ||
-                (selectedMethod === "delivery" ? "Не указано" : "Самовывоз"),
-              ordered_items: cartItems.map((item) => ({
-                product_name: `${item.name} (${item.type || "обычный"})`,
-                quantity: item.quantity,
-                price_at_time_of_order: item.price,
-              })),
-              // Используем результат проверки или по умолчанию считаем новым
-              is_first_order: checkSuccess ? (isFirstOrder ? 1 : 0) : 1,
-              check_error: checkError || null, // Сохраняем ошибку проверки для отладки
-            };
-
-            console.log("Saving to database...");
-            const response = await fetch("/api/orders", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(orderData),
-            });
-
-            if (response.ok) {
-              const result = await response.json();
-              console.log("SUCCESS: Database saved", result);
-              return true;
-            } else {
-              const errorText = await response.text();
-              console.warn("WARNING: Database save failed:", errorText);
-              return false;
-            }
-          } catch (error) {
-            console.warn("WARNING: Database error:", error);
-            return false;
-          }
-        };
-
-        // Запускаем все сервисы параллельно: Email, Telegram, WhatsApp и базу данных
-        await Promise.allSettled([
-          sendEmail(),
-          sendTelegramMessage(),
-          sendWhatsApp(),
-          saveToDb(),
-        ]);
-
-        console.log("All services processed");
-        alert(
-          "✅ Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
-        );
-
-        // Очищаем корзину и перенаправляем
-        clearCart();
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1500);
-      } catch (error) {
-        console.error("Unexpected error in main processing:", error);
-
-        alert(
-          "⚠️ Произошла ошибка при отправке заказа.\nПожалуйста, попробуйте еще раз или свяжитесь с нами напрямую.",
-        );
-
-        clearCart();
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 1500);
-      } finally {
-        setLoading(false);
-      }
-    } else {
+      alert(
+        "✅ Ваш заказ был отправлен!\nВ ближайшее время с вами свяжется наш менеджер.",
+      );
+      clearCart();
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 500);
+    } catch (error) {
+      console.error("Critical error:", error);
+      alert("⚠️ Произошла ошибка. Попробуйте еще раз.");
+    } finally {
       setLoading(false);
     }
   };
@@ -687,7 +529,7 @@ ${selectedMethod === "delivery" ? `🏙 Город: ${formData.city || "Не у�
               <p
                 style={{
                   color: "rgb(198, 58, 58)",
-                                      fontSize: "14px",
+                  fontSize: "14px",
                   textAlign: "center",
                   marginTop: "10px",
                 }}
