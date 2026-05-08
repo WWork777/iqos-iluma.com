@@ -13,7 +13,7 @@ export default function Reviews() {
   const items = [
     {
       id: "1",
-      name: "Иван П.",
+      name: "Анна П.",
       rank: 5,
       date: "19 июля 2024",
       text: "Приобрела iluma prime. Быстро помогли подобрать стики по вкусу. Благодарю за великолепную и качественную работу!",
